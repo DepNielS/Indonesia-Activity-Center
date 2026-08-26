@@ -1,4 +1,4 @@
-import { db } from '../index';
+import { db } from '../../db/index';
 import { roles } from '../schema';
 
 const roleData = [

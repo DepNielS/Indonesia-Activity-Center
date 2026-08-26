@@ -1,16 +1,18 @@
 import { Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { JwtStrategy } from './strategies/jwt.strategy';
-
 import { UsersModule } from '../users/users.module';
+
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { RolesGuard } from './guards/roles.guard';
+
+import { RolesService } from './services/roles.service';
 
 @Module({
   imports: [
@@ -19,17 +21,13 @@ import { UsersModule } from '../users/users.module';
     PassportModule,
 
     JwtModule.registerAsync({
-      inject: [
-        ConfigService,
-      ],
+      imports: [ConfigModule],
 
-      useFactory: (
-        configService: ConfigService,
-      ) => {
+      inject: [ConfigService],
+
+      useFactory: (configService: ConfigService) => {
         const jwtSecret =
-          configService.get<string>(
-            'JWT_SECRET',
-          );
+          configService.get<string>('JWT_SECRET');
 
         if (!jwtSecret) {
           throw new Error(
@@ -41,7 +39,7 @@ import { UsersModule } from '../users/users.module';
           secret: jwtSecret,
 
           signOptions: {
-            expiresIn: '1h',
+            expiresIn: '1d',
           },
         };
       },
@@ -56,10 +54,15 @@ import { UsersModule } from '../users/users.module';
     AuthService,
     JwtStrategy,
     JwtAuthGuard,
+    RolesGuard,
+    RolesService,
   ],
 
   exports: [
     AuthService,
+    JwtAuthGuard,
+    RolesGuard,
+    RolesService,
   ],
 })
 export class AuthModule {}

@@ -4,6 +4,8 @@ import { UsersModule } from './modules/users/users.module';
 import { AppController } from './app.controller';
 import { DatabaseService } from './db/database.service';
 import { AuthModule } from './modules/auth/auth.module';
+import { HealthModule } from './modules/health/health.module';
+import { EventsModule } from './modules/events/events.module';
 
 @Module({
   imports: [
@@ -13,6 +15,9 @@ import { AuthModule } from './modules/auth/auth.module';
 
     UsersModule,
     AuthModule,
+    EventsModule,
+    HealthModule,
+
   ],
     controllers: [AppController],
 

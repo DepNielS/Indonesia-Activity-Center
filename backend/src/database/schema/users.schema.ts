@@ -1,4 +1,3 @@
-import { from } from "rxjs";
 import {
     pgTable,
     serial,
@@ -37,7 +36,7 @@ export const users = pgTable('users', {
     .defaultNow()
     .notNull(),
 
-    updatedAt: timestamp('update_at')
+    updatedAt: timestamp('updated_at')
     .defaultNow()
     .notNull(),
 });

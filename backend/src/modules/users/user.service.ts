@@ -9,7 +9,7 @@ import * as argon2 from 'argon2';
 import { eq } from 'drizzle-orm';
 
 import { db } from '../../db';
-import { roles, users } from '../../db/schema';
+import { roles, users } from '../../database/schema';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
