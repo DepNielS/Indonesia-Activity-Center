@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './modules/users/users.module';
 import { AppController } from './app.controller';
-import { DatabaseService } from './db/database.service';
+import { DatabaseModule } from './db/database.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { HealthModule } from './modules/health/health.module';
 import { EventsModule } from './modules/events/events.module';
@@ -12,7 +12,7 @@ import { EventsModule } from './modules/events/events.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-
+    DatabaseModule,
     UsersModule,
     AuthModule,
     EventsModule,
@@ -21,6 +21,5 @@ import { EventsModule } from './modules/events/events.module';
   ],
     controllers: [AppController],
 
-  providers: [DatabaseService,],
 })
 export class AppModule {}

@@ -6,6 +6,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 
@@ -18,6 +19,7 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 
 import { Roles } from '../auth/decorators/roles.decorator';
+import { QueryEventsDto } from './dto/query-events.dto';
 
 @Controller('events')
 export class EventsController {
@@ -59,8 +61,12 @@ export class EventsController {
 
     @Get()
     @UseGuards(JwtAuthGuard)
-    async findAll() {
-    return this.eventsService.findAll();
+    async findAll(
+      @Query() query: QueryEventsDto,
+    ) {
+      return this.eventsService.findAll(
+        query,
+      );
     }
 
     @Get(':id')
@@ -113,6 +119,16 @@ export class EventsController {
       id,
     );
   }
+
+    @Post(':id/unpublish')
+    @UseGuards(JwtAuthGuard, RolesGuard)
+    @Roles('SUPER_ADMIN', 'ADMIN')
+    async unpublish(
+    @Param('id', ParseIntPipe)
+    id: number,
+    ) {
+    return this.eventsService.unpublishEvent(id);
+    }
 
   @Post(':id/cancel')
   @UseGuards(

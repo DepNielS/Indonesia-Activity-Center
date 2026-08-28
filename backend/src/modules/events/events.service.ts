@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 
-import { eq, and } from 'drizzle-orm';
+import { eq, and, asc } from 'drizzle-orm';
 
 import { db } from '../../db';
 import { events } from '../../database/schema';
@@ -15,6 +15,7 @@ import {
 } from './dto/create-event.dto';
 
 import { UpdateEventDto } from './dto/update-event.dto';
+import { QueryEventsDto } from './dto/query-events.dto';
 
 @Injectable()
 export class EventsService {
@@ -57,11 +58,29 @@ export class EventsService {
     return result[0];
   }
 
-  async findAll() {
+  async findAll(query: QueryEventsDto) {
+  if (query.status) {
     return db
       .select()
-      .from(events);
+      .from(events)
+      .where(
+        eq(
+          events.status,
+          query.status,
+        ),
+      )
+      .orderBy(
+        asc(events.startAt),
+      );
   }
+
+  return db
+    .select()
+    .from(events)
+    .orderBy(
+      asc(events.startAt),
+    );
+}
 
   async findById(id: number) {
     const result = await db
@@ -87,6 +106,12 @@ export class EventsService {
   ) {
     const existingEvent =
       await this.findById(id);
+
+      if (existingEvent.status === EventStatus.CANCELLED) {
+      throw new ConflictException(
+        'Cancelled event cannot be updated',
+      );
+    }
 
     const startAt =
       dto.startAt !== undefined
@@ -152,10 +177,6 @@ export class EventsService {
           location: dto.location,
         }),
 
-        ...(dto.status !== undefined && {
-          status: dto.status,
-        }),
-
         updatedAt: new Date(),
       })
       .where(eq(events.id, id))
@@ -165,34 +186,50 @@ export class EventsService {
   }
 
   async publishEvent(id: number) {
-    const event =
-      await this.findById(id);
+  const event =
+    await this.findById(id);
 
-    if (event.status === EventStatus.PUBLISHED) {
-      throw new ConflictException(
-        'Event is already published',
-      );
-    }
-
-    if (event.status === EventStatus.CANCELLED) {
-      throw new ConflictException(
-        'Cancelled event cannot be published',
-      );
-    }
-
-    const result = await db
-      .update(events)
-      .set({
-        status: EventStatus.PUBLISHED,
-        updatedAt: new Date(),
-      })
-      .where(eq(events.id, id))
-      .returning();
-
-    return result[0];
+  if (event.status === EventStatus.PUBLISHED) {
+    throw new ConflictException(
+      'Event is already published',
+    );
   }
 
-  async findPublished() {
+  if (event.status === EventStatus.CANCELLED) {
+    throw new ConflictException(
+      'Cancelled event cannot be published',
+    );
+  }
+
+  if (event.endAt <= event.startAt) {
+    throw new ConflictException(
+      'Invalid event schedule',
+    );
+  }
+
+  const now = new Date();
+
+  if (event.endAt < now) {
+    throw new ConflictException(
+      'Past events cannot be published',
+    );
+  }
+
+  const result = await db
+    .update(events)
+    .set({
+      status: EventStatus.PUBLISHED,
+      updatedAt: new Date(),
+    })
+    .where(
+      eq(events.id, id),
+    )
+    .returning();
+
+  return result[0];
+}
+
+async findPublished() {
   return db
     .select({
       id: events.id,
@@ -210,6 +247,9 @@ export class EventsService {
         events.status,
         EventStatus.PUBLISHED,
       ),
+    )
+    .orderBy(
+      asc(events.startAt),
     );
 }
 
@@ -248,6 +288,27 @@ async findPublishedBySlug(
   }
 
   return event;
+}
+
+async unpublishEvent(id: number) {
+  const event = await this.findById(id);
+
+  if (event.status !== EventStatus.PUBLISHED) {
+    throw new ConflictException(
+      'Only published events can be unpublished',
+    );
+  }
+
+  const result = await db
+    .update(events)
+    .set({
+      status: EventStatus.DRAFT,
+      updatedAt: new Date(),
+    })
+    .where(eq(events.id, id))
+    .returning();
+
+  return result[0];
 }
 
   async cancelEvent(id: number) {

@@ -1,13 +1,10 @@
 import {
   IsDateString,
-  IsEnum,
   IsOptional,
   IsString,
   IsUrl,
   MaxLength,
 } from 'class-validator';
-
-import { EventStatus } from './create-event.dto';
 
 export class UpdateEventDto {
   @IsOptional()
@@ -41,8 +38,4 @@ export class UpdateEventDto {
   @IsString()
   @MaxLength(200)
   location?: string;
-
-  @IsOptional()
-  @IsEnum(EventStatus)
-  status?: EventStatus;
 }
