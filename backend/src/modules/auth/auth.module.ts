@@ -14,6 +14,8 @@ import { RolesGuard } from './guards/roles.guard';
 
 import { RolesService } from './services/roles.service';
 
+import type { StringValue } from 'ms';
+
 @Module({
   imports: [
     UsersModule,
@@ -35,11 +37,17 @@ import { RolesService } from './services/roles.service';
           );
         }
 
+        const jwtExpiresIn =
+          configService.get<string>(
+            'JWT_EXPIRES_IN',
+          ) ?? '1d';
+
         return {
           secret: jwtSecret,
 
           signOptions: {
-            expiresIn: '1d',
+            expiresIn:
+              jwtExpiresIn as StringValue,
           },
         };
       },

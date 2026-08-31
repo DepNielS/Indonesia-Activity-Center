@@ -13,7 +13,7 @@ const roleData = [
   },
 ];
 
-async function seedRoles() {
+export async function seedRoles() {
   console.log('Starting role seed...');
 
   for (const role of roleData) {
@@ -25,12 +25,3 @@ async function seedRoles() {
 
   console.log('Role seed completed.');
 }
-
-seedRoles()
-  .catch((error) => {
-    console.error('Role seed failed:', error);
-    process.exit(1);
-  })
-  .finally(() => {
-    process.exit(0);
-  });

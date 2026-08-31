@@ -1,19 +1,57 @@
 import { ValidationPipe } from '@nestjs/common';
+
 import { NestFactory } from '@nestjs/core';
+
+import {
+  DocumentBuilder,
+  SwaggerModule,
+} from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
 
+// ==========================================
+// SWAGGER
+// ==========================================
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  const config =
+  new DocumentBuilder()
+    .setTitle(
+      'Indonesia Activity Center API',
+    )
+    .setDescription(
+      'API documentation for Indonesia Activity Center',
+    )
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+
+const document =
+  SwaggerModule.createDocument(
+    app,
+    config,
+  );
+
+SwaggerModule.setup(
+  'api/docs',
+  app,
+  document,
+);
+
   //API VERSIONING (1)
   app.setGlobalPrefix('api/v1'); 
-
+  //CORS
+  app.enableCors({
+  origin: 'http://localhost:3000',
+  credentials: true,
+  });
+  //GLOBAL VALIDATION
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
       transform: true,
-      forbidNonWhitelisted:true,
+      forbidNonWhitelisted: true,
     }),
   );
 

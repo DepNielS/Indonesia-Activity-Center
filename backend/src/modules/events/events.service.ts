@@ -59,6 +59,11 @@ export class EventsService {
   }
 
   async findAll(query: QueryEventsDto) {
+  const page = query.page ?? 1;
+  const limit = query.limit ?? 10;
+
+  const offset = (page - 1) * limit;
+
   if (query.status) {
     return db
       .select()
@@ -71,7 +76,9 @@ export class EventsService {
       )
       .orderBy(
         asc(events.startAt),
-      );
+      )
+      .limit(limit)
+      .offset(offset);
   }
 
   return db
@@ -79,7 +86,9 @@ export class EventsService {
     .from(events)
     .orderBy(
       asc(events.startAt),
-    );
+    )
+    .limit(limit)
+    .offset(offset);
 }
 
   async findById(id: number) {
