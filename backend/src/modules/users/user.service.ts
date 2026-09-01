@@ -191,12 +191,13 @@ async findAll() {
     .set(updateData)
     .where(eq(users.id, id))
     .returning({
-      id: users.id,
-      name: users.name,
-      email: users.email,
-      roleId: users.roleId,
-      createdAt: users.createdAt,
-      updatedAt: users.updatedAt,
+        id: users.id,
+        name: users.name,
+        email: users.email,
+        roleId: users.roleId,
+        isActive: users.isActive,
+        createdAt: users.createdAt,
+        updatedAt: users.updatedAt,
     });
 
   return result[0];

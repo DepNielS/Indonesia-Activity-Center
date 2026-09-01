@@ -35,7 +35,7 @@ export class EventsController {
   ) {}
   
   @Post()
-  @ApiBearerAuth()
+  @ApiBearerAuth('access-token')
   @ApiOperation({
     summary: 'Create event',
     description:
@@ -50,6 +50,10 @@ export class EventsController {
   })
   @ApiConflictResponse({
     description: 'Event slug is already registered',
+  })
+  @ApiUnauthorizedResponse({
+  description:
+    'Missing or invalid authentication token',
   })
   @UseGuards(
     JwtAuthGuard,
@@ -92,6 +96,7 @@ export class EventsController {
     })
     @ApiOkResponse({
       description: 'Published event successfully retrieved',
+      type: EventResponseDto,
     })
     @ApiNotFoundResponse({
       description: 'Published event not found',
@@ -106,7 +111,7 @@ export class EventsController {
 
     
     @Get()
-    @ApiBearerAuth()
+    @ApiBearerAuth('access-token')
     @ApiOperation({
         summary: 'Get all events',
         description:
@@ -130,7 +135,7 @@ export class EventsController {
     }
 
     @Get(':id')
-    @ApiBearerAuth()
+    @ApiBearerAuth('access-token')
     @ApiOperation({
       summary: 'Get event by ID',
       description: 'Return a single event by its ID.',
@@ -156,7 +161,7 @@ export class EventsController {
 
   
   @Patch(':id')
-  @ApiBearerAuth()
+  @ApiBearerAuth('access-token')
   @ApiOperation({
     summary: 'Update event',
     description:
@@ -201,7 +206,7 @@ export class EventsController {
 
   
   @Post(':id/publish')
-  @ApiBearerAuth()
+  @ApiBearerAuth('access-token')
   @ApiOperation({
     summary: 'Publish event',
     description:
@@ -244,7 +249,7 @@ export class EventsController {
   }
     
     @Post(':id/unpublish')
-    @ApiBearerAuth()
+    @ApiBearerAuth('access-token')
     @ApiOperation({
       summary: 'Unpublish event',
       description:
@@ -280,7 +285,7 @@ export class EventsController {
 
   
     @Post(':id/cancel')
-    @ApiBearerAuth()
+    @ApiBearerAuth('access-token')
     @ApiOperation({
     summary: 'Cancel event',
     description:

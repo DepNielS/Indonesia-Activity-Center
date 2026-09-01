@@ -53,9 +53,7 @@ export class PagesService {
           excerpt: dto.excerpt,
           content: dto.content,
           image: dto.image,
-          status:
-            dto.status ??
-            PageStatus.DRAFT,
+          status: PageStatus.DRAFT,
         })
         .returning();
 
@@ -219,11 +217,6 @@ export class PagesService {
           ...(dto.image !==
             undefined && {
             image: dto.image,
-          }),
-
-          ...(dto.status !==
-            undefined && {
-            status: dto.status,
           }),
 
           updatedAt:

@@ -60,7 +60,7 @@ export class AuthController {
    
 
   @Get('me')
-  @ApiBearerAuth()
+  @ApiBearerAuth('access-token')
   @ApiOperation({
         summary: 'Get authenticated user',
         description:
@@ -83,7 +83,7 @@ export class AuthController {
 
   
   @Get('admin-test')
-  @ApiBearerAuth()
+  @ApiBearerAuth('access-token')
   @ApiOperation({
   summary: 'Test SUPER_ADMIN access',
   description:

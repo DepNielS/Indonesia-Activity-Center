@@ -1,5 +1,4 @@
 import {
-  IsEnum,
   IsOptional,
   IsString,
   IsUrl,
@@ -10,7 +9,6 @@ import {
   ApiPropertyOptional,
 } from '@nestjs/swagger';
 
-import { PageStatus } from './create-page.dto';
 
 export class UpdatePageDto {
   @ApiPropertyOptional({
@@ -64,12 +62,4 @@ export class UpdatePageDto {
   @MaxLength(500)
   image?: string;
 
-  @ApiPropertyOptional({
-    enum: PageStatus,
-    example: PageStatus.DRAFT,
-    description: 'Updated page status',
-  })
-  @IsOptional()
-  @IsEnum(PageStatus)
-  status?: PageStatus;
 }

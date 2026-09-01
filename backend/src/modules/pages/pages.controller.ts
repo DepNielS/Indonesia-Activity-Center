@@ -77,7 +77,7 @@ export class PagesController {
   // ==========================================
   
   @Get()
-  @ApiBearerAuth()
+  @ApiBearerAuth('access-token')
   @ApiOperation({
     summary: 'Get all pages',
     description:
@@ -99,7 +99,7 @@ export class PagesController {
 
   
   @Get(':id')
-  @ApiBearerAuth()
+  @ApiBearerAuth('access-token')
   @ApiOperation({
     summary: 'Get page by ID',
     description:
@@ -128,7 +128,7 @@ export class PagesController {
   // CREATE
   // ==========================================
   @Post()
-  @ApiBearerAuth()
+  @ApiBearerAuth('access-token')
   @ApiOperation({
     summary: 'Create page',
     description:
@@ -171,7 +171,7 @@ export class PagesController {
   // UPDATE
   // ==========================================
   @Patch(':id')
-  @ApiBearerAuth()
+  @ApiBearerAuth('access-token')
   @ApiOperation({
     summary: 'Update page',
     description:
@@ -221,7 +221,7 @@ export class PagesController {
   // PUBLISH
   // ==========================================
   @Post(':id/publish')
-  @ApiBearerAuth()
+  @ApiBearerAuth('access-token')
   @ApiOperation({
     summary: 'Publish page',
     description:
@@ -268,7 +268,7 @@ export class PagesController {
   // UNPUBLISH
   // ==========================================
   @Post(':id/unpublish')
-  @ApiBearerAuth()
+  @ApiBearerAuth('access-token')
   @ApiOperation({
     summary: 'Unpublish page',
     description:

@@ -1,3 +1,4 @@
+
 import { ValidationPipe } from '@nestjs/common';
 
 import { NestFactory } from '@nestjs/core';
@@ -9,45 +10,25 @@ import {
 
 import { AppModule } from './app.module';
 
-// ==========================================
-// SWAGGER
-// ==========================================
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const config =
-  new DocumentBuilder()
-    .setTitle(
-      'Indonesia Activity Center API',
-    )
-    .setDescription(
-      'API documentation for Indonesia Activity Center',
-    )
-    .setVersion('1.0')
-    .addBearerAuth()
-    .addServer('/api/v1')
-    .build();
+  // ==========================================
+  // API PREFIX
+  // ==========================================
+  app.setGlobalPrefix('api/v1');
 
-const document =
-  SwaggerModule.createDocument(
-    app,
-    config,
-  );
-
-SwaggerModule.setup(
-  'api/docs',
-  app,
-  document,
-);
-
-  //API VERSIONING (1)
-  app.setGlobalPrefix('api/v1'); 
-  //CORS
+  // ==========================================
+  // CORS
+  // ==========================================
   app.enableCors({
-  origin: 'http://localhost:3000',
-  credentials: true,
+    origin: 'http://localhost:3000',
+    credentials: true,
   });
-  //GLOBAL VALIDATION
+
+  // ==========================================
+  // GLOBAL VALIDATION
+  // ==========================================
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -56,7 +37,46 @@ SwaggerModule.setup(
     }),
   );
 
-  await app.listen(process.env.PORT ?? 4000);
+  // ==========================================
+  // SWAGGER
+  // ==========================================
+  const config = new DocumentBuilder()
+    .setTitle('Indonesia Activity Center API')
+    .setDescription(
+      'REST API for Indonesia Activity Center',
+    )
+    .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+      'access-token',
+    )
+    .build();
+
+  const document = SwaggerModule.createDocument(
+    app,
+    config,
+    {
+      ignoreGlobalPrefix: false,
+    },
+  );
+
+  SwaggerModule.setup(
+    'docs',
+    app,
+    document,
+  );
+
+  // ==========================================
+  // SERVER
+  // ==========================================
+  await app.listen(
+    process.env.PORT ?? 4000,
+  );
 }
 
 bootstrap();
+

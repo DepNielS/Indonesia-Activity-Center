@@ -19,7 +19,7 @@ import { UsersService } from './user.service';
 
 
 @ApiTags('Users')
-@ApiBearerAuth()
+@ApiBearerAuth('access-token')
 @Controller('users')
 export class UsersController {
   constructor(
