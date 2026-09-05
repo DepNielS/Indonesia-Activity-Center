@@ -8,6 +8,8 @@ import { HealthModule } from './modules/health/health.module';
 import { EventsModule } from './modules/events/events.module';
 import { PagesModule } from './modules/pages/pages.module';
 import { ActivitiesModule } from './modules/activities/activities.module';
+import { ActivityCategoriesModule } from './modules/activities-category/activity-categories..module';
+
 
 @Module({
   imports: [
@@ -21,6 +23,7 @@ import { ActivitiesModule } from './modules/activities/activities.module';
     PagesModule,
     HealthModule,
     ActivitiesModule,
+    ActivityCategoriesModule,
 
   ],
     controllers: [AppController],

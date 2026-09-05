@@ -1,0 +1,1 @@
+ALTER TABLE "activities" ALTER COLUMN "category_id" SET NOT NULL;

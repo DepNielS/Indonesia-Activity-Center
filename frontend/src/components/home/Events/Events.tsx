@@ -3,10 +3,16 @@ import Link from "next/link";
 import Container from "../../ui/Container";
 import EventCard from "./EventCard";
 
-import { events } from "@/src/data/events";
+import {
+  getPublishedEvents,
+} from "@/src/lib/api/events";
 
-export default function Events() {
-  const featuredEvents = events.slice(0, 3);
+export default async function Events() {
+  const events =
+    await getPublishedEvents();
+
+  const featuredEvents =
+    events.slice(0, 3);
 
   return (
     <section className="events-section">
@@ -32,9 +38,10 @@ export default function Events() {
           </div>
 
           <p className="events-description">
-            Stay connected with the latest activities,
-            gatherings, workshops, and experiences
-            happening at Indonesia Activity Center.
+            Stay connected with the latest
+            activities, gatherings, workshops,
+            and experiences happening at
+            Indonesia Activity Center.
           </p>
 
         </div>
@@ -42,16 +49,26 @@ export default function Events() {
 
         {/* EVENTS */}
 
-        <div className="events-grid">
+        {featuredEvents.length > 0 ? (
+          <div className="events-grid">
 
-          {featuredEvents.map((event) => (
-            <EventCard
-              key={event.id}
-              event={event}
-            />
-          ))}
+            {featuredEvents.map(
+              (event) => (
+                <EventCard
+                  key={event.id}
+                  event={event}
+                />
+              ),
+            )}
 
-        </div>
+          </div>
+        ) : (
+          <div className="events-empty">
+            <p>
+              No upcoming events available.
+            </p>
+          </div>
+        )}
 
 
         {/* VIEW ALL */}

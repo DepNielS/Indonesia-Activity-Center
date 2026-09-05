@@ -1,5 +1,6 @@
+
 import {
-  IsEnum,
+  IsInt,
   IsOptional,
   IsString,
   IsUrl,
@@ -9,9 +10,8 @@ import {
 
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
-import { ActivityStatus } from './create-activity.dto';
-
 export class UpdateActivityDto {
+
   @ApiPropertyOptional({
     example: 'Ayurvedic Massage Experience',
     description: 'Updated activity name',
@@ -22,6 +22,7 @@ export class UpdateActivityDto {
   @MaxLength(150)
   name?: string;
 
+
   @ApiPropertyOptional({
     example: 'ayurvedic-massage-experience',
     description: 'Updated unique URL-friendly activity slug',
@@ -31,10 +32,11 @@ export class UpdateActivityDto {
   @IsString()
   @MaxLength(180)
   @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
-  message:
-    'slug must contain only lowercase letters, numbers, and single hyphens',
+    message:
+      'slug must contain only lowercase letters, numbers, and single hyphens',
   })
   slug?: string;
+
 
   @ApiPropertyOptional({
     example:
@@ -44,6 +46,7 @@ export class UpdateActivityDto {
   @IsOptional()
   @IsString()
   description?: string;
+
 
   @ApiPropertyOptional({
     example:
@@ -56,6 +59,7 @@ export class UpdateActivityDto {
   @MaxLength(500)
   image?: string;
 
+
   @ApiPropertyOptional({
     example: 'Wellness Center',
     description: 'Updated activity location',
@@ -65,6 +69,7 @@ export class UpdateActivityDto {
   @IsString()
   @MaxLength(200)
   location?: string;
+
 
   @ApiPropertyOptional({
     example: '90 minutes',
@@ -76,4 +81,13 @@ export class UpdateActivityDto {
   @MaxLength(100)
   duration?: string;
 
+
+  @ApiPropertyOptional({
+    example: 3,
+    description: 'Updated activity category ID',
+  })
+  @IsOptional()
+  @IsInt()
+  categoryId?: number;
 }
+

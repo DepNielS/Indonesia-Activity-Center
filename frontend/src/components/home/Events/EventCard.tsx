@@ -1,9 +1,9 @@
 import Link from "next/link";
 
-import type { Event } from "@/src/types/event";
+import type { PublicEvent } from "@/src/lib/api/events";
 
 interface EventCardProps {
-  event: Event;
+  event: PublicEvent;
 }
 
 export default function EventCard({
@@ -16,9 +16,16 @@ export default function EventCard({
 
       <div className="event-card-image">
 
-        <span>
-          {event.category}
-        </span>
+        {event.image ? (
+          <img
+            src={event.image}
+            alt={event.title}
+          />
+        ) : (
+          <span>
+            EVENT
+          </span>
+        )}
 
       </div>
 
@@ -30,7 +37,7 @@ export default function EventCard({
         <div className="event-card-date">
 
           <span className="event-card-date-day">
-            {event.date}
+            {formatEventDate(event.startAt)}
           </span>
 
         </div>
@@ -47,18 +54,21 @@ export default function EventCard({
         <div className="event-card-meta">
 
           <span>
-            {event.time}
+            {formatEventTime(
+              event.startAt,
+              event.endAt,
+            )}
           </span>
 
           <span>
-            {event.location}
+            {event.location ?? "Location TBA"}
           </span>
 
         </div>
 
 
         <Link
-          href={`/events/${event.id}`}
+          href={`/events/${event.slug}`}
           className="event-card-link"
         >
           View Event →
@@ -68,4 +78,49 @@ export default function EventCard({
 
     </article>
   );
+}
+
+function formatEventDate(
+  value: string,
+): string {
+  return new Date(
+    value,
+  ).toLocaleDateString(
+    "en-GB",
+    {
+      day: "2-digit",
+      month: "short",
+    },
+  ).toUpperCase();
+}
+
+function formatEventTime(
+  startAt: string,
+  endAt: string,
+): string {
+  const start =
+    new Date(startAt);
+
+  const end =
+    new Date(endAt);
+
+  const startTime =
+    start.toLocaleTimeString(
+      "en-GB",
+      {
+        hour: "2-digit",
+        minute: "2-digit",
+      },
+    );
+
+  const endTime =
+    end.toLocaleTimeString(
+      "en-GB",
+      {
+        hour: "2-digit",
+        minute: "2-digit",
+      },
+    );
+
+  return `${startTime} - ${endTime}`;
 }

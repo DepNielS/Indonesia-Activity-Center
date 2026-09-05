@@ -1,11 +1,9 @@
-export default function foodPage() {
-  return (
-    <main>
-      <h1>Food</h1>
+import ActivityCategoryPage from "@/src/components/home/Activity/ActivityCategoryPage";
 
-      <p>
-        Discover Food courts and activities.
-      </p>
-    </main>
+export default function FoodPage() {
+  return (
+    <ActivityCategoryPage
+      categorySlug="food"
+    />
   );
 }

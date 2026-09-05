@@ -1,38 +1,12 @@
 import Container from "../../ui/Container";
 import ActivityCard from "./ActivityCard";
 
-const activities = [
-  {
-    number: "01",
-    title: "Padel",
-    description:
-      "Play, train, and connect on our padel courts in a vibrant social environment.",
-    href: "/padel",
-  },
-  {
-    number: "02",
-    title: "Local Food",
-    description:
-      "Discover local flavors and enjoy carefully selected food in a relaxed atmosphere.",
-    href: "/food",
-  },
-  {
-    number: "03",
-    title: "Wellness",
-    description:
-      "Relax and restore your body with Ayurvedic treatments and wellness experiences.",
-    href: "/wellness",
-  },
-  {
-    number: "04",
-    title: "Events",
-    description:
-      "Join activities, community gatherings, workshops, and special events.",
-    href: "/events",
-  },
-];
+import { getPublishedActivities } from "@/src/lib/api/activities";
 
-export default function Activities() {
+export default async function Activities() {
+  const activities =
+    await getPublishedActivities();
+
   return (
     <section
       id="activities"
@@ -73,13 +47,13 @@ export default function Activities() {
 
         <div className="activities-grid">
 
-          {activities.map((activity) => (
+          {activities.map((activity, index) => (
             <ActivityCard
-              key={activity.number}
-              number={activity.number}
-              title={activity.title}
+              key={activity.id}
+              number={String(index + 1).padStart(2, "0")}
+              title={activity.name}
               description={activity.description}
-              href={activity.href}
+              href={`/activities/${activity.slug}`}
             />
           ))}
 

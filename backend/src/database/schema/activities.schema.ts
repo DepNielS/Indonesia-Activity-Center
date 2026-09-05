@@ -1,4 +1,5 @@
 import {
+  integer,
   pgEnum,
   pgTable,
   serial,
@@ -6,6 +7,7 @@ import {
   timestamp,
   varchar,
 } from 'drizzle-orm/pg-core';
+import {activityCategories, } from './activity-category.schema';
 
 export const activityStatusEnum = pgEnum(
   'activity_status',
@@ -20,6 +22,13 @@ export const activities = pgTable(
   {
     id: serial('id')
       .primaryKey(),
+
+    categoryId: integer('category_id')
+      .notNull()
+      .references(
+        () => activityCategories.id,
+    ),
+
 
     name: varchar('name', {
       length: 150,

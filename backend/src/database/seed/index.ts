@@ -2,6 +2,7 @@ import { seedRoles } from './roles.seed';
 import { seedEvents } from './events.seed';
 import { seedPages } from './pages.seed';
 import { seedActivities } from './activities.seed';
+import { seedActivityCategories } from './activity-categories.seed';
 
 async function seed() {
 
@@ -15,7 +16,10 @@ async function seed() {
 
   await seedPages();
 
+  await seedActivityCategories();
+  
   await seedActivities();
+  
 
   console.log('================================');
   console.log('Database seed completed.');

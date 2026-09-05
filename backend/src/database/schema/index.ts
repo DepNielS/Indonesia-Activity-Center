@@ -3,3 +3,4 @@ export * from './users.schema';
 export * from './events.schema';
 export * from './pages.schema';
 export * from './activities.schema';
+export * from './activity-category.schema';

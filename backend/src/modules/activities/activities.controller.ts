@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -76,6 +77,29 @@ export class ActivitiesController {
     @Param('slug') slug: string,
   ) {
     return this.activitiesService.findPublishedBySlug(
+      slug,
+    );
+  }
+
+  @Get('category/:slug')
+  @ApiOperation({
+    summary: 'Get published activities by category',
+    description:
+      'Return all published activities belonging to the specified category.',
+  })
+  @ApiOkResponse({
+    description:
+      'List of published activities in the category',
+    type: ActivityResponseDto,
+    isArray: true,
+  })
+  @ApiNotFoundResponse({
+    description: 'Activity category not found',
+  })
+  async findPublishedByCategory(
+    @Param('slug') slug: string,
+  ) {
+    return this.activitiesService.findPublishedByCategory(
       slug,
     );
   }
@@ -321,6 +345,50 @@ export class ActivitiesController {
     id: number,
   ) {
     return this.activitiesService.unpublishActivity(
+      id,
+    );
+  }
+
+  // ==========================================
+  // DELETE
+  // ==========================================
+
+  @Delete(':id')
+  @ApiBearerAuth('access-token')
+  @ApiOperation({
+    summary: 'Delete activity',
+    description:
+      'Delete an activity. Requires SUPER_ADMIN or ADMIN role.',
+  })
+  @ApiOkResponse({
+    description:
+      'Activity successfully deleted',
+  })
+  @ApiUnauthorizedResponse({
+    description:
+      'Missing or invalid authentication token',
+  })
+  @ApiForbiddenResponse({
+    description:
+      'User does not have permission to delete activities',
+  })
+  @ApiNotFoundResponse({
+    description: 'Activity not found',
+  })
+  @UseGuards(
+    JwtAuthGuard,
+    RolesGuard,
+  )
+  @Roles(
+    'SUPER_ADMIN',
+    'ADMIN',
+  )
+  @HttpCode(HttpStatus.OK)
+  async delete(
+    @Param('id', ParseIntPipe)
+    id: number,
+  ) {
+    return this.activitiesService.deleteActivity(
       id,
     );
   }

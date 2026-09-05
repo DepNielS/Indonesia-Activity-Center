@@ -11,7 +11,11 @@ import {
 } from 'drizzle-orm';
 
 import { db } from '../../db';
-import { activities } from '../../database/schema';
+
+import {
+  activities,
+  activityCategories,
+} from '../../database/schema';
 
 import {
   ActivityStatus,
@@ -23,13 +27,14 @@ import { UpdateActivityDto } from './dto/update-activity.dto';
 @Injectable()
 export class ActivitiesService {
 
-  // ==========================================
-  // CREATE
-  // ==========================================
+  // ============================================
+  // CREATE ACTIVITY
+  // ============================================
 
   async createActivity(
     dto: CreateActivityDto,
   ) {
+    // Check duplicate slug
     const existingActivity =
       await db
         .select()
@@ -48,6 +53,26 @@ export class ActivitiesService {
       );
     }
 
+    // Check category exists
+    const category =
+      await db
+        .select()
+        .from(activityCategories)
+        .where(
+          eq(
+            activityCategories.id,
+            dto.categoryId,
+          ),
+        )
+        .limit(1);
+
+    if (!category[0]) {
+      throw new NotFoundException(
+        'Activity category not found',
+      );
+    }
+
+    // Create activity
     const result =
       await db
         .insert(activities)
@@ -58,6 +83,11 @@ export class ActivitiesService {
           image: dto.image,
           location: dto.location,
           duration: dto.duration,
+
+          // Category relation
+          categoryId: dto.categoryId,
+
+          // New activity always starts as DRAFT
           status: ActivityStatus.DRAFT,
         })
         .returning();
@@ -65,9 +95,10 @@ export class ActivitiesService {
     return result[0];
   }
 
-  // ==========================================
-  // FIND ALL
-  // ==========================================
+
+  // ============================================
+  // FIND ALL ACTIVITIES
+  // ============================================
 
   async findAll() {
     return db
@@ -78,9 +109,10 @@ export class ActivitiesService {
       );
   }
 
-  // ==========================================
-  // FIND BY ID
-  // ==========================================
+
+  // ============================================
+  // FIND ACTIVITY BY ID
+  // ============================================
 
   async findById(
     id: number,
@@ -109,36 +141,124 @@ export class ActivitiesService {
     return activity;
   }
 
-  // ==========================================
-  // FIND PUBLISHED
-  // ==========================================
+  
+// ============================================
+// FIND PUBLISHED ACTIVITIES BY CATEGORY
+// ============================================
 
-  async findPublished() {
-    return db
+async findPublishedByCategory(
+  categorySlug: string,
+) {
+  const category =
+    await db
       .select({
-        id: activities.id,
-        name: activities.name,
-        slug: activities.slug,
-        description: activities.description,
-        image: activities.image,
-        location: activities.location,
-        duration: activities.duration,
+        id: activityCategories.id,
+        name: activityCategories.name,
+        slug: activityCategories.slug,
       })
-      .from(activities)
+      .from(activityCategories)
       .where(
+        eq(
+          activityCategories.slug,
+          categorySlug,
+        ),
+      )
+      .limit(1);
+
+  if (!category[0]) {
+    throw new NotFoundException(
+      'Activity category not found',
+    );
+  }
+
+  return db
+    .select({
+      id: activities.id,
+      name: activities.name,
+      slug: activities.slug,
+      description: activities.description,
+      image: activities.image,
+      location: activities.location,
+      duration: activities.duration,
+
+      category: {
+        id: activityCategories.id,
+        name: activityCategories.name,
+        slug: activityCategories.slug,
+      },
+    })
+    .from(activities)
+    .innerJoin(
+      activityCategories,
+      eq(
+        activities.categoryId,
+        activityCategories.id,
+      ),
+    )
+    .where(
+      and(
         eq(
           activities.status,
           ActivityStatus.PUBLISHED,
         ),
-      )
-      .orderBy(
-        asc(activities.name),
-      );
-  }
+        eq(
+          activityCategories.slug,
+          categorySlug,
+        ),
+      ),
+    )
+    .orderBy(
+      asc(activities.name),
+    );
+}
 
-  // ==========================================
-  // FIND PUBLISHED BY SLUG
-  // ==========================================
+
+
+
+  // ============================================
+  // FIND PUBLISHED ACTIVITIES
+  // ============================================
+
+  async findPublished() {
+  return db
+    .select({
+      id: activities.id,
+      name: activities.name,
+      slug: activities.slug,
+      description: activities.description,
+      image: activities.image,
+      location: activities.location,
+      duration: activities.duration,
+
+      category: {
+        id: activityCategories.id,
+        name: activityCategories.name,
+        slug: activityCategories.slug,
+      },
+    })
+    .from(activities)
+    .innerJoin(
+      activityCategories,
+      eq(
+        activities.categoryId,
+        activityCategories.id,
+      ),
+    )
+    .where(
+      eq(
+        activities.status,
+        ActivityStatus.PUBLISHED,
+      ),
+    )
+    .orderBy(
+      asc(activities.name),
+    );
+}
+
+
+  // ============================================
+  // FIND PUBLISHED ACTIVITY BY SLUG
+  // ============================================
 
   async findPublishedBySlug(
   slug: string,
@@ -153,8 +273,21 @@ export class ActivitiesService {
         image: activities.image,
         location: activities.location,
         duration: activities.duration,
+
+        category: {
+          id: activityCategories.id,
+          name: activityCategories.name,
+          slug: activityCategories.slug,
+        },
       })
       .from(activities)
+      .innerJoin(
+        activityCategories,
+        eq(
+          activities.categoryId,
+          activityCategories.id,
+        ),
+      )
       .where(
         and(
           eq(
@@ -181,17 +314,19 @@ export class ActivitiesService {
   return activity;
 }
 
-  // ==========================================
-  // UPDATE
-  // ==========================================
+
+  // ============================================
+  // UPDATE ACTIVITY
+  // ============================================
 
   async updateActivity(
     id: number,
     dto: UpdateActivityDto,
   ) {
-    const existingActivity =
-      await this.findById(id);
+    // Make sure activity exists
+    await this.findById(id);
 
+    // Check duplicate slug
     if (
       dto.slug !== undefined
     ) {
@@ -217,10 +352,37 @@ export class ActivitiesService {
       }
     }
 
+
+    // Check category if categoryId is being updated
+    if (
+      dto.categoryId !== undefined
+    ) {
+      const category =
+        await db
+          .select()
+          .from(activityCategories)
+          .where(
+            eq(
+              activityCategories.id,
+              dto.categoryId,
+            ),
+          )
+          .limit(1);
+
+      if (!category[0]) {
+        throw new NotFoundException(
+          'Activity category not found',
+        );
+      }
+    }
+
+
+    // Update activity
     const result =
       await db
         .update(activities)
         .set({
+
           ...(dto.name !==
             undefined && {
             name: dto.name,
@@ -254,6 +416,12 @@ export class ActivitiesService {
               dto.duration,
           }),
 
+          ...(dto.categoryId !==
+            undefined && {
+            categoryId:
+              dto.categoryId,
+          }),
+
           updatedAt:
             new Date(),
         })
@@ -268,9 +436,10 @@ export class ActivitiesService {
     return result[0];
   }
 
-  // ==========================================
-  // PUBLISH
-  // ==========================================
+
+  // ============================================
+  // PUBLISH ACTIVITY
+  // ============================================
 
   async publishActivity(
     id: number,
@@ -278,6 +447,7 @@ export class ActivitiesService {
     const activity =
       await this.findById(id);
 
+    // Prevent publishing already published activity
     if (
       activity.status ===
       ActivityStatus.PUBLISHED
@@ -308,9 +478,10 @@ export class ActivitiesService {
     return result[0];
   }
 
-  // ==========================================
-  // UNPUBLISH
-  // ==========================================
+
+  // ============================================
+  // UNPUBLISH ACTIVITY
+  // ============================================
 
   async unpublishActivity(
     id: number,
@@ -318,6 +489,7 @@ export class ActivitiesService {
     const activity =
       await this.findById(id);
 
+    // Only published activity can be unpublished
     if (
       activity.status !==
       ActivityStatus.PUBLISHED
@@ -347,4 +519,28 @@ export class ActivitiesService {
 
     return result[0];
   }
+
+  async deleteActivity(id: number) {
+  const existing = await db
+    .select({
+      id: activities.id,
+    })
+    .from(activities)
+    .where(eq(activities.id, id))
+    .limit(1);
+
+  if (!existing[0]) {
+    throw new NotFoundException(
+      'Activity not found',
+    );
+  }
+
+  await db
+    .delete(activities)
+    .where(eq(activities.id, id));
+
+  return {
+    message: 'Activity deleted successfully',
+  };
+}
 }
