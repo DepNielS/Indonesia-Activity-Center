@@ -1,4 +1,8 @@
+import type {Metadata} from 'next';
+
 import {notFound} from 'next/navigation';
+
+
 
 import Container from '@/src/components/ui/Container';
 
@@ -11,6 +15,28 @@ interface EventDetailPageProps {
   params: Promise<{
     slug: string;
   }>;
+}
+
+export async function generateMetadata({
+  params,
+}: EventDetailPageProps): Promise<Metadata> {
+  const { slug } = await params;
+
+  try {
+    const event =
+      await getPublishedEventBySlug(slug);
+
+    return {
+      title: `${event.title} | Indonesia Activity Center`,
+      description: event.description,
+    };
+  } catch {
+    return {
+      title: 'Event Not Found | Indonesia Activity Center',
+      description:
+        'The requested event could not be found.',
+    };
+  }
 }
 
 export default async function EventDetailPage({
@@ -28,96 +54,102 @@ export default async function EventDetailPage({
     }
 
   return (
-    <section
-      id="event-detail"
-      className="events-section"
-    >
-      <Container>
+  <section
+    id="event-detail"
+    className="event-detail-section"
+  >
+    <Container>
 
-        {/* EVENT IMAGE */}
+      {/* EVENT IMAGE */}
 
-        <div className="event-detail-image">
+      <div className="event-detail-image">
 
-          {event.image ? (
-            <img
-              src={event.image}
-              alt={event.title}
-            />
-          ) : (
-            <div className="event-detail-image-placeholder">
-              EVENT
-            </div>
-          )}
-
-        </div>
-
-
-        {/* EVENT CONTENT */}
-
-        <div className="event-detail-content">
-
-          <span className="section-label">
+        {event.image ? (
+          <img
+            src={event.image}
+            alt={event.title}
+          />
+        ) : (
+          <div className="event-detail-image-placeholder">
             EVENT
-          </span>
+          </div>
+        )}
 
-          <h1 className="events-title">
-            {event.title}
-          </h1>
-
-          <p className="event-detail-description">
-            {event.description}
-          </p>
+      </div>
 
 
-          {/* EVENT INFORMATION */}
+      {/* EVENT CONTENT */}
 
-          <div className="event-detail-meta">
+      <div className="event-detail-content">
 
-            <div>
-              <span>
-                DATE
-              </span>
+        <span className="section-label">
+          EVENT
+        </span>
 
-              <p>
-                {formatEventDate(
-                  event.startAt,
-                  event.endAt,
-                )}
-              </p>
-            </div>
+        <h1 className="event-detail-title">
+          {event.title}
+        </h1>
 
-
-            <div>
-              <span>
-                TIME
-              </span>
-
-              <p>
-                {formatEventTime(
-                  event.startAt,
-                  event.endAt,
-                )}
-              </p>
-            </div>
+        <p className="event-detail-description">
+          {event.description}
+        </p>
 
 
-            <div>
-              <span>
-                LOCATION
-              </span>
+        {/* EVENT META */}
 
-              <p>
-                {event.location ??
-                  'Location TBA'}
-              </p>
-            </div>
+        <div className="event-detail-meta">
+
+          <div className="event-detail-meta-item">
+
+            <span className="event-detail-meta-label">
+              DATE
+            </span>
+
+            <p>
+              {formatEventDate(
+                event.startAt,
+                event.endAt,
+              )}
+            </p>
+
+          </div>
+
+
+          <div className="event-detail-meta-item">
+
+            <span className="event-detail-meta-label">
+              TIME
+            </span>
+
+            <p>
+              {formatEventTime(
+                event.startAt,
+                event.endAt,
+              )}
+            </p>
+
+          </div>
+
+
+          <div className="event-detail-meta-item">
+
+            <span className="event-detail-meta-label">
+              LOCATION
+            </span>
+
+            <p>
+              {event.location ??
+                'Location TBA'}
+            </p>
 
           </div>
 
         </div>
 
-      </Container>
-    </section>
+      </div>
+
+    </Container>
+  </section>
   );
 }
 

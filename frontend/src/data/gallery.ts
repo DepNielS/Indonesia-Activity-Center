@@ -5,7 +5,7 @@ export const galleryItems: GalleryItem[] = [
     id: "padel-court",
     title: "Padel Court",
     category: "PADEL",
-    image: "/images/gallery/padel-court.jpg",
+    image: "images/padel/padel_a.jpg",
     alt: "Padel court at Indonesia Activity Center",
   },
 
@@ -13,7 +13,7 @@ export const galleryItems: GalleryItem[] = [
     id: "padel-community",
     title: "Padel Community",
     category: "PADEL",
-    image: "/images/gallery/padel-community.jpg",
+    image: "images/padel/padel_b.jpg",
     alt: "People playing padel at Indonesia Activity Center",
   },
 
@@ -21,7 +21,7 @@ export const galleryItems: GalleryItem[] = [
     id: "local-food",
     title: "Local Food",
     category: "FOOD",
-    image: "/images/gallery/local-food.jpg",
+    image: "/images/food/local_food.jpg",
     alt: "Local food served at Indonesia Activity Center",
   },
 
@@ -29,7 +29,7 @@ export const galleryItems: GalleryItem[] = [
     id: "restaurant",
     title: "Dining Experience",
     category: "FOOD",
-    image: "/images/gallery/restaurant.jpg",
+    image: "/images/diningexp/dining_exp_b.webp",
     alt: "Dining area at Indonesia Activity Center",
   },
 
@@ -37,7 +37,7 @@ export const galleryItems: GalleryItem[] = [
     id: "wellness-treatment",
     title: "Wellness Treatment",
     category: "WELLNESS",
-    image: "/images/gallery/wellness-treatment.jpg",
+    image: "/images/wellness/wellness_a.jpg",
     alt: "Ayurvedic wellness treatment",
   },
 
@@ -45,7 +45,7 @@ export const galleryItems: GalleryItem[] = [
     id: "wellness-space",
     title: "Wellness Space",
     category: "WELLNESS",
-    image: "/images/gallery/wellness-space.jpg",
+    image: "/images/wellness/wellness_b.jpg",
     alt: "Wellness area at Indonesia Activity Center",
   },
 
@@ -53,7 +53,7 @@ export const galleryItems: GalleryItem[] = [
     id: "community-event",
     title: "Community Event",
     category: "EVENTS",
-    image: "/images/gallery/community-event.jpg",
+    image: "/images/events/community-event.jpg",
     alt: "Community event at Indonesia Activity Center",
   },
 
@@ -61,7 +61,7 @@ export const galleryItems: GalleryItem[] = [
     id: "weekend-event",
     title: "Weekend Gathering",
     category: "EVENTS",
-    image: "/images/gallery/weekend-event.jpg",
+    image: "/images/events/community-event2.jpg",
     alt: "Weekend gathering at Indonesia Activity Center",
   },
 ];

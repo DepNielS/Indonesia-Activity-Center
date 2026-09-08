@@ -12,10 +12,10 @@ export default function Home() {
   <main>
     
     <Hero />
-    <Activities />
     <About />
     <Facilities />
-    <Events />'
+    <Activities />
+    <Events />
     <Gallery />
     <Location />
     <ContactCTA />

@@ -1,7 +1,7 @@
 
 'use client';
 
-import AdminLayout from '@/src/components/admin/AdminLayout';
+
 import { useAuth } from '@/src/context/AuthContext';
 import {getDashboardStats, } from '@/src/lib/admin/dashboard';
 import Link from 'next/link';

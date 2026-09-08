@@ -132,12 +132,14 @@ export default function EventActions({
 
   return (
     <div className="admin-event-actions">
-      <Link
-        href={`/admin/events/${event.id}/edit`}
-        className="admin-event-action-link"
-      >
-        Edit
-      </Link>
+      {event.status !== 'CANCELLED' && (
+        <Link
+          href={`/admin/events/${event.id}/edit`}
+          className="admin-event-action-link"
+        >
+          Edit
+        </Link>
+      )}
 
       {canPublish &&
         event.status === 'DRAFT' && (

@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Container from "../ui/Container";
 
+import Image from "next/image";
+
 export default function Hero() {
   return (
     <section className="hero">
@@ -55,13 +57,15 @@ export default function Hero() {
           {/* HERO IMAGE */}
 
           <div className="hero-image-wrapper">
-
             <div className="hero-image">
-              <span>
-                IAC
-              </span>
+              <Image
+                src="/images/logo-iac.webp"
+                alt="Indonesia Activity Center"
+                width={400}
+                height={400}
+                priority
+              />
             </div>
-
           </div>
 
         </div>

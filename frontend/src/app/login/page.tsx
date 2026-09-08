@@ -33,7 +33,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (!loading && isAuthenticated) {
-      router.replace('/');
+      router.replace('/admin');
     }
   }, [
     loading,
