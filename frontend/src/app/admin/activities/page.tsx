@@ -1,4 +1,3 @@
-
 'use client';
 
 import {
@@ -8,9 +7,7 @@ import {
 
 import { useRouter } from 'next/navigation';
 
-import {
-  useAuth,
-} from '@/src/context/AuthContext';
+import { useAuth } from '@/src/context/AuthContext';
 
 import {
   createAdminActivity,
@@ -20,7 +17,7 @@ import {
   unpublishAdminActivity,
   deleteAdminActivity,
   type AdminActivity,
-  } from '@/src/lib/admin/activities';
+} from '@/src/lib/admin/activities';
 
 import {
   getActivityCategories,
@@ -35,7 +32,9 @@ import ActivityForm, {
   type ActivityFormData,
 } from '@/src/components/admin/ActivityForm';
 
-import { canCreateActivities } from '@/src/lib/admin/permissions';
+import {
+  canCreateActivities,
+} from '@/src/lib/admin/permissions';
 
 export default function AdminPage() {
   const router = useRouter();
@@ -70,7 +69,11 @@ export default function AdminPage() {
     useState(false);
 
   const [editingActivity, setEditingActivity] =
-    useState<AdminActivity | null>(null);  
+    useState<AdminActivity | null>(null);
+
+  /* =========================================
+     LOAD ADMIN DATA
+     ========================================= */
 
   useEffect(() => {
     if (authLoading) {
@@ -120,130 +123,149 @@ export default function AdminPage() {
     router,
   ]);
 
-  
-async function handleCreateActivity(
-  data: ActivityFormData,
-) {
-  await createAdminActivity({
-    name: data.name,
-    slug: data.slug,
-    description: data.description,
-    categoryId: data.categoryId,
-    image: data.image || undefined,
-    location: data.location || undefined,
-    duration: data.duration || undefined,
-  });
+  /* =========================================
+     CREATE ACTIVITY
+     ========================================= */
 
-  setShowCreateForm(false);
-
-  const updatedActivities =
-    await getAdminActivities();
-
-  setActivities(
-    updatedActivities,
-  );
-}
-
-function handleEditActivity(
-  activity: AdminActivity,
-) {
-  setEditingActivity(activity);
-  setShowCreateForm(false);
-}
-
-
-async function handleUpdateActivity(
-  data: ActivityFormData,
-) {
-  if (!editingActivity) {
-    return;
-  }
-
-  await updateAdminActivity(
-    editingActivity.id,
-    {
+  async function handleCreateActivity(
+    data: ActivityFormData,
+  ) {
+    await createAdminActivity({
       name: data.name,
       slug: data.slug,
       description: data.description,
       categoryId: data.categoryId,
       image: data.image || undefined,
-      location:
-        data.location || undefined,
-      duration:
-        data.duration || undefined,
-    },
-  );
+      location: data.location || undefined,
+      duration: data.duration || undefined,
+    });
 
-  setEditingActivity(null);
+    setShowCreateForm(false);
 
-  const updatedActivities =
-    await getAdminActivities();
+    const updatedActivities =
+      await getAdminActivities();
 
-  setActivities(
-    updatedActivities,
-  );
-}
-
-
-async function handlePublishActivity(
-  activity: AdminActivity,
-) {
-  await publishAdminActivity(
-    activity.id,
-  );
-
-  const updatedActivities =
-    await getAdminActivities();
-
-  setActivities(
-    updatedActivities,
-  );
-}
-
-
-async function handleUnpublishActivity(
-  activity: AdminActivity,
-) {
-  await unpublishAdminActivity(
-    activity.id,
-  );
-
-  const updatedActivities =
-    await getAdminActivities();
-
-  setActivities(
-    updatedActivities,
-  );
-}
-
-
-async function handleDeleteActivity(
-  activity: AdminActivity,
-) {
-  const confirmed =
-    window.confirm(
-      `Are you sure you want to delete "${activity.name}"?`,
+    setActivities(
+      updatedActivities,
     );
-
-  if (!confirmed) {
-    return;
   }
 
-  await deleteAdminActivity(
-    activity.id,
-  );
+  /* =========================================
+     EDIT ACTIVITY
+     ========================================= */
 
-  const updatedActivities =
-    await getAdminActivities();
+  function handleEditActivity(
+    activity: AdminActivity,
+  ) {
+    setEditingActivity(activity);
+    setShowCreateForm(false);
+  }
 
-  setActivities(
-    updatedActivities,
-  );
-}
+  /* =========================================
+     UPDATE ACTIVITY
+     ========================================= */
 
+  async function handleUpdateActivity(
+    data: ActivityFormData,
+  ) {
+    if (!editingActivity) {
+      return;
+    }
 
+    await updateAdminActivity(
+      editingActivity.id,
+      {
+        name: data.name,
+        slug: data.slug,
+        description: data.description,
+        categoryId: data.categoryId,
+        image: data.image || undefined,
+        location:
+          data.location || undefined,
+        duration:
+          data.duration || undefined,
+      },
+    );
 
+    setEditingActivity(null);
 
+    const updatedActivities =
+      await getAdminActivities();
+
+    setActivities(
+      updatedActivities,
+    );
+  }
+
+  /* =========================================
+     PUBLISH ACTIVITY
+     ========================================= */
+
+  async function handlePublishActivity(
+    activity: AdminActivity,
+  ) {
+    await publishAdminActivity(
+      activity.id,
+    );
+
+    const updatedActivities =
+      await getAdminActivities();
+
+    setActivities(
+      updatedActivities,
+    );
+  }
+
+  /* =========================================
+     UNPUBLISH ACTIVITY
+     ========================================= */
+
+  async function handleUnpublishActivity(
+    activity: AdminActivity,
+  ) {
+    await unpublishAdminActivity(
+      activity.id,
+    );
+
+    const updatedActivities =
+      await getAdminActivities();
+
+    setActivities(
+      updatedActivities,
+    );
+  }
+
+  /* =========================================
+     DELETE ACTIVITY
+     ========================================= */
+
+  async function handleDeleteActivity(
+    activity: AdminActivity,
+  ) {
+    const confirmed =
+      window.confirm(
+        `Are you sure you want to delete "${activity.name}"?`,
+      );
+
+    if (!confirmed) {
+      return;
+    }
+
+    await deleteAdminActivity(
+      activity.id,
+    );
+
+    const updatedActivities =
+      await getAdminActivities();
+
+    setActivities(
+      updatedActivities,
+    );
+  }
+
+  /* =========================================
+     FILTER
+     ========================================= */
 
   const filteredActivities =
     activities.filter((activity) => {
@@ -263,13 +285,19 @@ async function handleDeleteActivity(
       );
     });
 
+  /* =========================================
+     AUTH LOADING
+     ========================================= */
+
   if (authLoading) {
     return (
-      <main>
+      <main className="admin-activities-page">
         <section>
-          <p>
-            Checking authentication...
-          </p>
+          <div className="admin-activities-message">
+            <p>
+              Checking authentication...
+            </p>
+          </div>
         </section>
       </main>
     );
@@ -278,48 +306,64 @@ async function handleDeleteActivity(
   if (!isAuthenticated || !user) {
     return null;
   }
-return (
-  
-    <main>
+
+  /* =========================================
+     PAGE
+     ========================================= */
+
+  return (
+    <main className="admin-activities-page">
       <AdminHeader />
 
       <section>
-        <div>
-          <div>
-            <span>
+        <div className="admin-activities-header">
+
+          <div className="admin-activities-header-content">
+            <span className="admin-activities-label">
               CONTENT MANAGEMENT
             </span>
 
-            <h2>
+            <h1 className="admin-activities-title">
               Activities
-            </h2>
+            </h1>
 
-            <p>
+            <p className="admin-activities-description">
               Manage activities available
               on Indonesia Activity Center.
             </p>
           </div>
 
           {user &&
-            canCreateActivities(user.role) && (
+            canCreateActivities(
+              user.role,
+            ) && (
               <button
                 type="button"
+                className="admin-activities-create-button"
                 onClick={() =>
                   setShowCreateForm(true)
                 }
               >
-                Create Activity
+                + Create Activity
               </button>
             )}
+
         </div>
 
+        {/* =====================================
+            CREATE FORM
+            ===================================== */}
+
         {showCreateForm && (
-          <section>
-            <div>
-              <h2>
+          <section className="admin-activity-form-section">
+
+            <div className="admin-activity-form-header">
+              <h2 className="admin-activity-form-title">
                 Create Activity
               </h2>
+            </div>
 
+            <div className="admin-activity-form-body">
               <ActivityForm
                 categories={categories}
                 onSubmit={
@@ -330,16 +374,24 @@ return (
                 }
               />
             </div>
+
           </section>
         )}
 
+        {/* =====================================
+            EDIT FORM
+            ===================================== */}
+
         {editingActivity && (
-          <section>
-            <div>
-              <h2>
+          <section className="admin-activity-form-section">
+
+            <div className="admin-activity-form-header">
+              <h2 className="admin-activity-form-title">
                 Edit Activity
               </h2>
+            </div>
 
+            <div className="admin-activity-form-body">
               <ActivityForm
                 categories={categories}
                 initialData={
@@ -353,12 +405,19 @@ return (
                 }
               />
             </div>
+
           </section>
         )}
 
-        <section>
-          <div>
-            <div>
+        {/* =====================================
+            FILTER
+            ===================================== */}
+
+        <section className="admin-activities-filter-section">
+
+          <div className="admin-activities-filter">
+
+            <div className="admin-activities-filter-field">
               <label htmlFor="status-filter">
                 Status
               </label>
@@ -389,7 +448,7 @@ return (
               </select>
             </div>
 
-            <div>
+            <div className="admin-activities-filter-field">
               <label htmlFor="category-filter">
                 Category
               </label>
@@ -424,57 +483,65 @@ return (
                 )}
               </select>
             </div>
+
           </div>
 
-          {!loading &&
-            !error && (
-              <p>
-                Showing{' '}
-                {filteredActivities.length}{' '}
-                of {activities.length}{' '}
-                activities
-              </p>
-            )}
+        </section>
 
-          {loading && (
+        {/* =====================================
+            RESULT COUNT
+            ===================================== */}
+
+        {!loading && !error && (
+          <p className="admin-activities-result-count">
+            Showing{' '}
+            {filteredActivities.length}{' '}
+            of {activities.length}{' '}
+            activities
+          </p>
+        )}
+
+        {/* =====================================
+            LOADING
+            ===================================== */}
+
+        {loading && (
+          <div className="admin-activities-message">
             <p>
               Loading activities...
             </p>
-          )}
+          </div>
+        )}
 
-          {error && (
-            <p>
-              Error: {error}
-            </p>
-          )}
+        {/* =====================================
+            ERROR
+            ===================================== */}
 
-          {!loading &&
-            !error && (
-              <ActivityTable
-                activities={
-                  filteredActivities
-                }
-                categories={categories}
-                role={user.role}
-                onEdit={
-                  handleEditActivity
-                }
-                onPublish={
-                  handlePublishActivity
-                }
-                onUnpublish={
-                  handleUnpublishActivity
-                }
-                onDelete={
-                  handleDeleteActivity
-                }
-              />
-            )}
-        </section>
+        {error && (
+          <div className="admin-activities-error">
+            Error: {error}
+          </div>
+        )}
+
+        {/* =====================================
+    TABLE
+    ===================================== */}
+
+{!loading && !error && (
+  <section className="admin-activities-table-section">
+    <ActivityTable
+      activities={filteredActivities}
+      categories={categories}
+      role={user.role}
+      onEdit={handleEditActivity}
+      onPublish={handlePublishActivity}
+      onUnpublish={handleUnpublishActivity}
+      onDelete={handleDeleteActivity}
+    />
+  </section>
+)}
+
       </section>
     </main>
-);
-
-
+  );
 }
-

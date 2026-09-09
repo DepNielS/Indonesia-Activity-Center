@@ -1,15 +1,6 @@
-
-import type {
-  AdminActivity,
-} from '@/src/lib/admin/activities';
-
-import type {
-  ActivityCategory,
-} from '@/src/lib/api/activities';
-
-import type {
-  UserRole,
-} from '@/src/context/AuthContext';
+import type { AdminActivity } from '@/src/lib/admin/activities';
+import type { ActivityCategory } from '@/src/lib/api/activities';
+import type { UserRole } from '@/src/context/AuthContext';
 
 import {
   canEditActivities,
@@ -20,24 +11,11 @@ import {
 interface ActivityTableProps {
   activities: AdminActivity[];
   categories: ActivityCategory[];
-
   role: UserRole;
-
-  onEdit: (
-    activity: AdminActivity,
-  ) => void;
-
-  onPublish: (
-    activity: AdminActivity,
-  ) => void;
-
-  onUnpublish: (
-    activity: AdminActivity,
-  ) => void;
-
-  onDelete: (
-    activity: AdminActivity,
-  ) => void;
+  onEdit: (activity: AdminActivity) => void;
+  onPublish: (activity: AdminActivity) => void;
+  onUnpublish: (activity: AdminActivity) => void;
+  onDelete: (activity: AdminActivity) => void;
 }
 
 export default function ActivityTable({
@@ -49,112 +27,135 @@ export default function ActivityTable({
   onUnpublish,
   onDelete,
 }: ActivityTableProps) {
-  const canEdit =
-    canEditActivities(role);
+  const canEdit = canEditActivities(role);
+  const canPublish = canPublishActivities(role);
+  const canDelete = canDeleteActivities(role);
 
-  const canPublish =
-    canPublishActivities(role);
-
-  const canDelete =
-    canDeleteActivities(role);
-
-  function getCategoryName(
-    categoryId: number,
-  ) {
-    const category =
-      categories.find(
-        (item) =>
-          item.id === categoryId,
-      );
+  function getCategoryName(categoryId: number) {
+    const category = categories.find(
+      (item) => item.id === categoryId,
+    );
 
     return category?.name ?? '-';
   }
 
   if (activities.length === 0) {
     return (
-      <p>
-        No activities found.
-      </p>
+      <div className="admin-activities-message">
+        <p>No activities found.</p>
+      </div>
     );
   }
 
   return (
-    <div>
-      <table>
+    <div className="admin-activities-table-wrapper">
+      <table className="admin-activities-table">
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Status</th>
-            <th>Location</th>
-            <th>Duration</th>
-            <th>Actions</th>
+            <th className="activity-column-name">
+              Name
+            </th>
+
+            <th className="activity-column-category">
+              Category
+            </th>
+
+            <th className="activity-column-status">
+              Status
+            </th>
+
+            <th className="activity-column-location">
+              Location
+            </th>
+
+            <th className="activity-column-duration">
+              Duration
+            </th>
+
+            <th className="activity-column-actions">
+              Actions
+            </th>
           </tr>
         </thead>
 
         <tbody>
-          {activities.map(
-            (activity) => (
-              <tr
-                key={activity.id}
-              >
-                <td>
-                  {activity.name}
-                </td>
+          {activities.map((activity) => (
+            <tr key={activity.id}>
+              {/* NAME */}
+              <td>
+                <div className="admin-activity-name-wrapper">
+                  <div className="admin-activity-name">
+                    {activity.name}
+                  </div>
 
-                <td>
-                  {getCategoryName(
-                    activity.categoryId,
-                  )}
-                </td>
+                  <div className="admin-activity-slug">
+                    /{activity.slug}
+                  </div>
+                </div>
+              </td>
 
-                <td>
+              {/* CATEGORY */}
+              <td>
+                <span className="admin-activity-category">
+                  {getCategoryName(activity.categoryId)}
+                </span>
+              </td>
+
+              {/* STATUS */}
+              <td>
+                <span
+                  className={`admin-activity-status ${
+                    activity.status === 'PUBLISHED'
+                      ? 'admin-activity-status-published'
+                      : 'admin-activity-status-draft'
+                  }`}
+                >
                   {activity.status}
-                </td>
+                </span>
+              </td>
 
-                <td>
-                  {activity.location ??
-                    '-'}
-                </td>
+              {/* LOCATION */}
+              <td>
+                <span className="admin-activity-location">
+                  {activity.location ?? '-'}
+                </span>
+              </td>
 
-                <td>
-                  {activity.duration ??
-                    '-'}
-                </td>
+              {/* DURATION */}
+              <td>
+                <span className="admin-activity-duration">
+                  {activity.duration ?? '-'}
+                </span>
+              </td>
 
-                <td>
+              {/* ACTIONS */}
+              <td>
+                <div className="admin-activity-actions">
                   {canEdit && (
                     <button
                       type="button"
-                      onClick={() =>
-                        onEdit(activity)
-                      }
+                      className="admin-activity-action"
+                      onClick={() => onEdit(activity)}
                     >
                       Edit
                     </button>
                   )}
 
-
                   {canPublish && (
                     <button
                       type="button"
+                      className="admin-activity-action"
                       onClick={() => {
                         if (
-                          activity.status ===
-                          'PUBLISHED'
+                          activity.status === 'PUBLISHED'
                         ) {
-                          onUnpublish(
-                            activity,
-                          );
+                          onUnpublish(activity);
                         } else {
-                          onPublish(
-                            activity,
-                          );
+                          onPublish(activity);
                         }
                       }}
                     >
-                      {activity.status ===
-                      'PUBLISHED'
+                      {activity.status === 'PUBLISHED'
                         ? 'Unpublish'
                         : 'Publish'}
                     </button>
@@ -163,6 +164,7 @@ export default function ActivityTable({
                   {canDelete && (
                     <button
                       type="button"
+                      className="admin-activity-action admin-activity-action-danger"
                       onClick={() =>
                         onDelete(activity)
                       }
@@ -170,13 +172,12 @@ export default function ActivityTable({
                       Delete
                     </button>
                   )}
-                </td>
-              </tr>
-            ),
-          )}
+                </div>
+              </td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>
   );
 }
-

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Container from "../ui/Container";
+import Image from "next/image";
 
 export default function About() {
   return (
@@ -12,7 +13,13 @@ export default function About() {
 
           <div className="about-image-wrapper">
             <div className="about-image">
-              <span>IAC</span>
+              <Image
+                              src="/images/padel/padel_court.webp"
+                              alt="Indonesia Activity Center"
+                              width={400}
+                              height={400}
+                              priority
+                            />
             </div>
           </div>
 

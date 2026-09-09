@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useRouter } from 'next/navigation';
@@ -23,36 +22,40 @@ export default function AdminHeader() {
   }
 
   return (
-    <header>
-      <div>
-        <div>
-          <span>
+    <header className="admin-header">
+      <div className="admin-header-inner">
+
+        <div className="admin-header-brand">
+          <span className="admin-header-label">
             ADMIN DASHBOARD
           </span>
 
-          <h1>
+          <h1 className="admin-header-title">
             Indonesia Activity Center
           </h1>
         </div>
 
-        <div>
-          <p>
-            {user.email}
-          </p>
+        <div className="admin-header-account">
+          <div className="admin-header-user">
+            <p className="admin-header-email">
+              {user.email}
+            </p>
 
-          <p>
-            Role: {user.role}
-          </p>
+            <p className="admin-header-role">
+              Role: {user.role}
+            </p>
+          </div>
 
           <button
             type="button"
+            className="admin-header-logout"
             onClick={handleLogout}
           >
             Logout
           </button>
         </div>
+
       </div>
     </header>
   );
 }
-
