@@ -1,22 +1,58 @@
 import { Test, TestingModule } from '@nestjs/testing';
+
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { DatabaseService } from './db/database.service';
 
 describe('AppController', () => {
   let appController: AppController;
 
-  beforeEach(async () => {
-    const app: TestingModule = await Test.createTestingModule({
-      controllers: [AppController],
-      providers: [AppService],
-    }).compile();
+  const databaseServiceMock = {
+    checkConnection: jest.fn(),
+  };
 
-    appController = app.get<AppController>(AppController);
+  beforeEach(async () => {
+    const app: TestingModule =
+      await Test.createTestingModule({
+        controllers: [AppController],
+        providers: [
+          {
+            provide: DatabaseService,
+            useValue: databaseServiceMock,
+          },
+        ],
+      }).compile();
+
+    appController =
+      app.get<AppController>(AppController);
   });
 
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+  describe('getStatus', () => {
+    it('should return running status when database is connected', async () => {
+      databaseServiceMock.checkConnection.mockResolvedValue(
+        true,
+      );
+
+      await expect(
+        appController.getStatus(),
+      ).resolves.toEqual({
+        name: 'Indonesia Activity Center API',
+        status: 'running',
+        database: 'connected',
+      });
+    });
+
+    it('should return disconnected status when database is unavailable', async () => {
+      databaseServiceMock.checkConnection.mockResolvedValue(
+        false,
+      );
+
+      await expect(
+        appController.getStatus(),
+      ).resolves.toEqual({
+        name: 'Indonesia Activity Center API',
+        status: 'running',
+        database: 'disconnected',
+      });
     });
   });
 });

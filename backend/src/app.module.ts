@@ -9,13 +9,19 @@ import { EventsModule } from './modules/events/events.module';
 import { PagesModule } from './modules/pages/pages.module';
 import { ActivitiesModule } from './modules/activities/activities.module';
 import { ActivityCategoriesModule } from './modules/activities-category/activity-categories..module';
+import { SupabaseModule } from './supabase/supabase.module';
+import { UploadsModule } from './modules/uploads/uploads.module';
+import { envValidationSchema } from './config/env.validation';
 
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      validationSchema: envValidationSchema,
     }),
+    SupabaseModule,
+    UploadsModule,
     DatabaseModule,
     UsersModule,
     AuthModule,

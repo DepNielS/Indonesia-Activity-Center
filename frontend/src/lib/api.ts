@@ -47,3 +47,58 @@ export async function apiFetch<T>(
 
   return response.json();
 }
+
+
+// 
+export interface ImageUploadResponse {
+  path: string;
+  publicUrl: string;
+}
+
+export async function uploadImage(
+  file: File,
+): Promise<ImageUploadResponse> {
+  const token = getAccessToken();
+
+  if (!token) {
+    throw new Error(
+      'Authentication token is not available',
+    );
+  }
+
+  const formData = new FormData();
+
+  formData.append('file', file);
+
+  const response = await fetch(
+    `${API_URL}/uploads/image`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    },
+  );
+
+  if (!response.ok) {
+    let message = `Image upload failed: ${response.status}`;
+
+    try {
+      const errorData = await response.json();
+
+      if (
+        errorData &&
+        typeof errorData.message === 'string'
+      ) {
+        message = errorData.message;
+      }
+    } catch {
+      // Ignore invalid error response body.
+    }
+
+    throw new Error(message);
+  }
+
+  return response.json();
+}

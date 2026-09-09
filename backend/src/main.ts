@@ -21,10 +21,11 @@ async function bootstrap() {
   // ==========================================
   // CORS
   // ==========================================
+
   app.enableCors({
-    origin: 'http://localhost:3000',
-    credentials: true,
-  });
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+});
 
   // ==========================================
   // GLOBAL VALIDATION

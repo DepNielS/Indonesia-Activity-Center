@@ -3,8 +3,13 @@
 import {
   useEffect,
   useState,
+  type ChangeEvent,
   type FormEvent,
 } from 'react';
+
+import {
+  uploadImage,
+} from '@/src/lib/api';
 
 import type {
   ActivityCategory,
@@ -60,6 +65,15 @@ export default function ActivityForm({
   const [image, setImage] =
     useState('');
 
+  const [imagePreview, setImagePreview] =
+    useState('');
+
+  const [uploadingImage, setUploadingImage] =
+    useState(false);
+
+  const [imageError, setImageError] =
+    useState('');
+
   const [location, setLocation] =
     useState('');
 
@@ -79,32 +93,115 @@ export default function ActivityForm({
       setDescription('');
       setCategoryId('');
       setImage('');
+      setImagePreview('');
       setLocation('');
       setDuration('');
       setError('');
+      setImageError('');
 
       return;
     }
 
     setName(initialData.name);
+
     setSlug(initialData.slug);
+
     setDescription(
       initialData.description,
     );
+
     setCategoryId(
       initialData.categoryId,
     );
+
     setImage(
       initialData.image ?? '',
     );
+
+    setImagePreview('');
+
     setLocation(
       initialData.location ?? '',
     );
+
     setDuration(
       initialData.duration ?? '',
     );
+
     setError('');
+    setImageError('');
   }, [initialData]);
+
+  async function handleImageChange(
+    event: ChangeEvent<HTMLInputElement>,
+  ) {
+    const file =
+      event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    setImageError('');
+    setError('');
+
+    const allowedTypes = [
+      'image/jpeg',
+      'image/png',
+      'image/webp',
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      setImageError(
+        'Only JPEG, PNG, and WebP images are allowed.',
+      );
+
+      event.target.value = '';
+
+      return;
+    }
+
+    const maxFileSize =
+      5 * 1024 * 1024;
+
+    if (file.size > maxFileSize) {
+      setImageError(
+        'Image size must not exceed 5 MB.',
+      );
+
+      event.target.value = '';
+
+      return;
+    }
+
+    const previewUrl =
+      URL.createObjectURL(file);
+
+    setImagePreview(previewUrl);
+
+    setUploadingImage(true);
+
+    try {
+      const result =
+        await uploadImage(file);
+
+      setImage(
+        result.publicUrl,
+      );
+    } catch (error) {
+      setImage('');
+
+      setImagePreview('');
+
+      setImageError(
+        error instanceof Error
+          ? error.message
+          : 'Failed to upload image.',
+      );
+    } finally {
+      setUploadingImage(false);
+    }
+  }
 
   async function handleSubmit(
     event: FormEvent<HTMLFormElement>,
@@ -115,6 +212,21 @@ export default function ActivityForm({
       setError(
         'Please select a category.',
       );
+
+      return;
+    }
+
+    if (uploadingImage) {
+      setError(
+        'Please wait until the image upload is complete.',
+      );
+
+      return;
+    }
+
+    if (imageError) {
+      setError(imageError);
+
       return;
     }
 
@@ -243,20 +355,62 @@ export default function ActivityForm({
 
       <div>
         <label htmlFor="activity-image">
-          Image URL
+          Activity Image
         </label>
 
         <input
           id="activity-image"
-          type="url"
-          value={image}
-          onChange={(event) =>
-            setImage(
-              event.target.value,
-            )
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          onChange={handleImageChange}
+          disabled={
+            submitting ||
+            uploadingImage
           }
-          placeholder="https://example.com/image.jpg"
         />
+
+        <p>
+          Accepted formats: JPG, PNG,
+          WebP. Maximum size: 5 MB.
+        </p>
+
+        {uploadingImage && (
+          <p>
+            Uploading image...
+          </p>
+        )}
+
+        {imageError && (
+          <p>
+            {imageError}
+          </p>
+        )}
+
+        {imagePreview && (
+          <div>
+            <p>
+              Image Preview
+            </p>
+
+            <img
+              src={imagePreview}
+              alt="Selected activity"
+            />
+          </div>
+        )}
+
+        {!imagePreview && image && (
+          <div>
+            <p>
+              Current Image
+            </p>
+
+            <img
+              src={image}
+              alt="Current activity"
+            />
+          </div>
+        )}
       </div>
 
       <div>
@@ -305,14 +459,20 @@ export default function ActivityForm({
         <button
           type="button"
           onClick={onCancel}
-          disabled={submitting}
+          disabled={
+            submitting ||
+            uploadingImage
+          }
         >
           Cancel
         </button>
 
         <button
           type="submit"
-          disabled={submitting}
+          disabled={
+            submitting ||
+            uploadingImage
+          }
         >
           {submitting
             ? isEditMode
@@ -326,4 +486,3 @@ export default function ActivityForm({
     </form>
   );
 }
-
