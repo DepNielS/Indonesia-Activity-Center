@@ -198,177 +198,237 @@ export default function AboutPage() {
             {/* ACTIVITIES */}
 
             <div
-              className="
-                flex
-                min-h-[300px]
-                flex-col
-                justify-between
-                border-b
-                border-r
-                border-[var(--color-border)]
-                bg-[var(--color-surface)]
-                p-7
-                transition-[background,transform]
-                duration-250
-                hover:-translate-y-1
-                hover:bg-[var(--color-background)]
-                max-[600px]:min-h-[260px]
-                max-[600px]:p-6
-              "
-            >
-              <span
-                className="
-                  text-[13px]
-                  font-bold
-                  text-[var(--color-text-muted)]
-                "
-              >
-                01
-              </span>
+  className="
+    flex
+    min-h-[460px]
+    flex-col
+    border-b
+    border-r
+    border-[var(--color-border)]
+    bg-[var(--color-surface)]
+    transition-[background,transform]
+    duration-250
+    hover:-translate-y-1
+    hover:bg-[var(--color-background)]
+    max-[600px]:min-h-[420px]
+  "
+>
+  {/* IMAGE */}
 
-              <div>
-                <h3
-                  className="
-                    mb-[14px]
-                    mt-0
-                    text-[28px]
-                    font-bold
-                    text-[var(--color-text)]
-                  "
-                >
-                  Activities
-                </h3>
+  <div className="aspect-[4/3] w-full overflow-hidden">
+    <img
+      src="/images/padel/padel_a.jpg"
+      alt="Activities at Indonesia Activity Center"
+      className="block h-full w-full object-cover"
+    />
+  </div>
 
-                <p
-                  className="
-                    m-0
-                    text-[15px]
-                    leading-[1.6]
-                    text-[var(--color-text-muted)]
-                  "
-                >
-                  Explore active experiences and
-                  activities available at Indonesia
-                  Activity Center.
-                </p>
-              </div>
-            </div>
+  {/* CONTENT */}
+
+  <div
+    className="
+      flex
+      flex-1
+      flex-col
+      justify-between
+      p-7
+      max-[600px]:p-6
+    "
+  >
+    <span
+      className="
+        text-[13px]
+        font-bold
+        text-[var(--color-text-muted)]
+      "
+    >
+      01
+    </span>
+
+    <div>
+      <h3
+        className="
+          m-0
+          text-[28px]
+          font-bold
+          text-[var(--color-text)]
+        "
+      >
+        Activities
+      </h3>
+
+      <p
+        className="
+          mt-[14px]
+          mb-0
+          text-[15px]
+          leading-[1.6]
+          text-[var(--color-text-muted)]
+        "
+      >
+        Explore active experiences and
+        activities available at Indonesia
+        Activity Center.
+      </p>
+    </div>
+  </div>
+</div>
 
             {/* LOCAL FOOD */}
 
             <div
-              className="
-                flex
-                min-h-[300px]
-                flex-col
-                justify-between
-                border-b
-                border-r
-                border-[var(--color-border)]
-                bg-[var(--color-surface)]
-                p-7
-                transition-[background,transform]
-                duration-250
-                hover:-translate-y-1
-                hover:bg-[var(--color-background)]
-                max-[600px]:min-h-[260px]
-                max-[600px]:p-6
-              "
-            >
-              <span
-                className="
-                  text-[13px]
-                  font-bold
-                  text-[var(--color-text-muted)]
-                "
-              >
-                02
-              </span>
+  className="
+    flex
+    min-h-[460px]
+    flex-col
+    border-b
+    border-r
+    border-[var(--color-border)]
+    bg-[var(--color-surface)]
+    transition-[background,transform]
+    duration-250
+    hover:-translate-y-1
+    hover:bg-[var(--color-background)]
+    max-[600px]:min-h-[420px]
+  "
+>
+  {/* IMAGE */}
 
-              <div>
-                <h3
-                  className="
-                    mb-[14px]
-                    mt-0
-                    text-[28px]
-                    font-bold
-                    text-[var(--color-text)]
-                  "
-                >
-                  Local Food
-                </h3>
+  <div className="aspect-[4/3] w-full overflow-hidden">
+    <img
+      src="/images/food/local_food.jpg"
+      alt="Local food at Indonesia Activity Center"
+      className="block h-full w-full object-cover"
+    />
+  </div>
 
-                <p
-                  className="
-                    m-0
-                    text-[15px]
-                    leading-[1.6]
-                    text-[var(--color-text-muted)]
-                  "
-                >
-                  Discover local food experiences
-                  and flavors in one destination.
-                </p>
-              </div>
-            </div>
+  {/* CONTENT */}
+
+  <div
+    className="
+      flex
+      flex-1
+      flex-col
+      justify-between
+      p-7
+      max-[600px]:p-6
+    "
+  >
+    <span
+      className="
+        text-[13px]
+        font-bold
+        text-[var(--color-text-muted)]
+      "
+    >
+      02
+    </span>
+
+    <div>
+      <h3
+        className="
+          m-0
+          text-[28px]
+          font-bold
+          text-[var(--color-text)]
+        "
+      >
+        Local Food
+      </h3>
+
+      <p
+        className="
+          mt-[14px]
+          mb-0
+          text-[15px]
+          leading-[1.6]
+          text-[var(--color-text-muted)]
+        "
+      >
+        Discover local food experiences
+        and flavors in one destination.
+      </p>
+    </div>
+  </div>
+</div>
 
             {/* WELLNESS */}
 
             <div
-              className="
-                flex
-                min-h-[300px]
-                flex-col
-                justify-between
-                border-b
-                border-r
-                border-[var(--color-border)]
-                bg-[var(--color-surface)]
-                p-7
-                transition-[background,transform]
-                duration-250
-                hover:-translate-y-1
-                hover:bg-[var(--color-background)]
-                max-[600px]:min-h-[260px]
-                max-[600px]:p-6
-              "
-            >
-              <span
-                className="
-                  text-[13px]
-                  font-bold
-                  text-[var(--color-text-muted)]
-                "
-              >
-                03
-              </span>
+  className="
+    flex
+    min-h-[460px]
+    flex-col
+    border-b
+    border-r
+    border-[var(--color-border)]
+    bg-[var(--color-surface)]
+    transition-[background,transform]
+    duration-250
+    hover:-translate-y-1
+    hover:bg-[var(--color-background)]
+    max-[600px]:min-h-[420px]
+  "
+>
+  {/* IMAGE */}
 
-              <div>
-                <h3
-                  className="
-                    mb-[14px]
-                    mt-0
-                    text-[28px]
-                    font-bold
-                    text-[var(--color-text)]
-                  "
-                >
-                  Wellness
-                </h3>
+  <div className="aspect-[4/3] w-full overflow-hidden">
+    <img
+      src="/images/wellness/wellness_a.jpg"
+      alt="Wellness experience at Indonesia Activity Center"
+      className="block h-full w-full object-cover"
+    />
+  </div>
 
-                <p
-                  className="
-                    m-0
-                    text-[15px]
-                    leading-[1.6]
-                    text-[var(--color-text-muted)]
-                  "
-                >
-                  Take time to relax and experience
-                  wellness at Indonesia Activity Center.
-                </p>
-              </div>
-            </div>
+  {/* CONTENT */}
+
+  <div
+    className="
+      flex
+      flex-1
+      flex-col
+      justify-between
+      p-7
+      max-[600px]:p-6
+    "
+  >
+    <span
+      className="
+        text-[13px]
+        font-bold
+        text-[var(--color-text-muted)]
+      "
+    >
+      03
+    </span>
+
+    <div>
+      <h3
+        className="
+          m-0
+          text-[28px]
+          font-bold
+          text-[var(--color-text)]
+        "
+      >
+        Wellness
+      </h3>
+
+      <p
+        className="
+          mt-[14px]
+          mb-0
+          text-[15px]
+          leading-[1.6]
+          text-[var(--color-text-muted)]
+        "
+      >
+        Take time to relax and experience
+        wellness at Indonesia Activity Center.
+      </p>
+    </div>
+  </div>
+</div>
           </div>
         </Container>
       </section>
