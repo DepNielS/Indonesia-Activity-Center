@@ -45,12 +45,13 @@ export default async function ActivityCategoryPage({
         <div className="activities-grid">
           {activities.map((activity, index) => (
             <ActivityCard
-              key={activity.id}
-              number={String(index + 1).padStart(2, "0")}
-              title={activity.name}
-              description={activity.description}
-              href={`/activities/${activity.slug}`}
-            />
+  key={activity.id}
+  number={String(index + 1).padStart(2, "0")}
+  title={activity.name}
+  description={activity.description}
+  href={`/activities/${activity.slug}`}
+  image={activity.image}
+/>
           ))}
         </div>
       </Container>
