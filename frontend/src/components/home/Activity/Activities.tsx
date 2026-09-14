@@ -4,6 +4,7 @@ import ActivityCard from "./ActivityCard";
 import { getPublishedActivities } from "@/src/lib/api/activities";
 
 export default async function Activities() {
+  
   const activities = await getPublishedActivities();
 
   return (
@@ -92,15 +93,19 @@ export default async function Activities() {
             max-[600px]:grid-cols-1
           "
         >
-          {activities.map((activity, index) => (
-            <ActivityCard
-              key={activity.id}
-              number={String(index + 1).padStart(2, "0")}
-              title={activity.name}
-              description={activity.description}
-              href={`/activities/${activity.slug}`}
-            />
-          ))}
+          {activities.map((activity, index) => {
+
+  return (
+    <ActivityCard
+      key={activity.id}
+      number={String(index + 1).padStart(2, "0")}
+      title={activity.name}
+      description={activity.description}
+      href={`/activities/${activity.slug}`}
+      image={activity.image}
+    />
+  );
+})}
         </div>
       </Container>
     </section>

@@ -12,97 +12,111 @@ export default function EventCard({
   return (
     <article
       className="
-        overflow-hidden
-        border
-        border-[var(--color-border)]
-        bg-[var(--color-surface)]
-        transition-[transform,box-shadow]
-        duration-250
-        hover:-translate-y-[5px]
-        hover:shadow-[0_15px_40px_rgba(0,0,0,0.08)]
+        flex
+        flex-col
+        min-w-0
       "
     >
       {/* IMAGE */}
+
       <div
         className="
-          relative
-          flex
           w-full
-          aspect-[16/10]
-          items-end
-          bg-gradient-to-br
-          from-[var(--color-primary)]
-          to-[var(--color-primary-dark)]
-          p-5
+          aspect-[4/3]
+          overflow-hidden
+          bg-[#f1f1f1]
         "
       >
         {event.image ? (
           <img
             src={event.image}
             alt={event.title}
-            className="block h-full w-full object-cover"
+            className="
+              block
+              h-full
+              w-full
+              object-cover
+            "
           />
         ) : (
-          <span
+          <div
             className="
+              flex
+              h-full
+              w-full
+              items-center
+              justify-center
               text-[12px]
-              font-bold
-              tracking-[1.5px]
-              text-white
+              font-semibold
+              tracking-[0.12em]
+              text-[var(--color-text-muted)]
             "
           >
             EVENT
-          </span>
+          </div>
         )}
       </div>
 
       {/* CONTENT */}
-      <div className="p-[26px] max-[600px]:p-[22px]">
-        <div className="mb-[14px]">
-          <span
-            className="
-              text-[13px]
-              font-bold
-              tracking-[1px]
-              text-[var(--color-primary)]
-            "
-          >
-            {formatEventDate(event.startAt)}
-          </span>
+
+      <div
+        className="
+          flex
+          flex-col
+          pt-4
+        "
+      >
+        {/* DATE */}
+
+        <div
+          className="
+            mb-1
+            text-[13px]
+            text-[var(--color-text-muted)]
+          "
+        >
+          {formatEventDate(event.startAt)}
         </div>
+
+        {/* TITLE */}
 
         <h3
           className="
-            mb-[14px]
-            text-[25px]
-            font-bold
-            leading-[1.2]
+            m-0
+            text-[16px]
+            font-medium
+            leading-[1.4]
             text-[var(--color-text)]
-            max-[600px]:text-[23px]
           "
         >
           {event.title}
         </h3>
 
+        {/* DESCRIPTION */}
+
         <p
           className="
-            mb-5
+            m-0
+            mt-1
             text-[14px]
-            leading-[1.65]
+            leading-[1.6]
             text-[var(--color-text-muted)]
           "
         >
           {event.description}
         </p>
 
+        {/* META */}
+
         <div
           className="
-            mb-6
+            mt-1
             flex
-            flex-col
-            gap-[6px]
+            flex-wrap
+            gap-x-1
             text-[13px]
-            text-[var(--color-text-muted)]
+            leading-[1.5]
+            text-[var(--color-text)]
           "
         >
           <span>
@@ -117,15 +131,20 @@ export default function EventCard({
           </span>
         </div>
 
+        {/* LINK */}
+
         <Link
           href={`/events/${event.slug}`}
           className="
+            mt-1
+            inline-flex
+            w-fit
             text-[14px]
-            font-semibold
-            text-[var(--color-primary)]
+            font-medium
+            text-[var(--color-text)]
             transition-colors
             duration-200
-            hover:text-[var(--color-primary-dark)]
+            hover:text-[var(--color-primary)]
           "
         >
           View Event →

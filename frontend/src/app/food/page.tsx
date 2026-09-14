@@ -6,18 +6,21 @@ const foodHighlights = [
     title: "Local Cuisine",
     description:
       "Enjoy a selection of local flavors inspired by the rich culinary traditions of Indonesia.",
+    image: "/images/food/local_food.jpg",
   },
   {
     number: "02",
     title: "Relaxed Dining",
     description:
       "A comfortable dining space where guests can slow down, connect, and enjoy their time together.",
+    image: "/images/food/relaxed-dining.jpg",
   },
   {
     number: "03",
     title: "Food & Beverage",
     description:
       "A selection of food and beverages designed to complement your experience at Indonesia Activity Center.",
+    image: "/images/food/food-beverage.jpg",
   },
 ];
 
@@ -102,69 +105,96 @@ export default function FoodPage() {
             "
           >
             {foodHighlights.map((item) => (
-              <article
-                key={item.number}
-                className="
-                  flex
-                  min-h-[300px]
-                  flex-col
-                  justify-between
-                  border-r
-                  border-b
-                  border-[var(--color-border)]
-                  bg-[var(--color-surface)]
-                  p-8
-                  transition-[background,transform]
-                  duration-250
-                  hover:-translate-y-1
-                  hover:bg-[var(--color-background)]
-                  max-[600px]:min-h-[260px]
-                  max-[600px]:p-6
-                "
-              >
-                <span
-                  className="
-                    text-[13px]
-                    font-bold
-                    text-[var(--color-text-muted)]
-                  "
-                >
-                  {item.number}
-                </span>
+  <article
+    key={item.number}
+    className="
+      flex
+      min-h-[460px]
+      flex-col
+      border-r
+      border-b
+      border-[var(--color-border)]
+      bg-[var(--color-surface)]
+      transition-[background,transform]
+      duration-250
+      hover:-translate-y-1
+      hover:bg-[var(--color-background)]
+      max-[600px]:min-h-[420px]
+    "
+  >
+    {/* IMAGE */}
 
-                <div
-                  className="
-                    mt-[60px]
-                    max-[600px]:mt-[50px]
-                  "
-                >
-                  <h2
-                    className="
-                      m-0
-                      text-[28px]
-                      font-bold
-                      leading-[1.2]
-                      text-[var(--color-text)]
-                      max-[600px]:text-[26px]
-                    "
-                  >
-                    {item.title}
-                  </h2>
+    <div
+      className="
+        aspect-[4/3]
+        w-full
+        overflow-hidden
+        bg-[#f1f1f1]
+      "
+    >
+      <img
+        src={item.image}
+        alt={item.title}
+        className="
+          block
+          h-full
+          w-full
+          object-cover
+        "
+      />
+    </div>
 
-                  <p
-                    className="
-                      mt-5
-                      max-w-[420px]
-                      text-[15px]
-                      leading-[1.7]
-                      text-[var(--color-text-muted)]
-                    "
-                  >
-                    {item.description}
-                  </p>
-                </div>
-              </article>
-            ))}
+    {/* CONTENT */}
+
+    <div
+      className="
+        flex
+        flex-1
+        flex-col
+        justify-between
+        p-8
+        max-[600px]:p-6
+      "
+    >
+      <span
+        className="
+          text-[13px]
+          font-bold
+          text-[var(--color-text-muted)]
+        "
+      >
+        {item.number}
+      </span>
+
+      <div className="mt-[50px]">
+        <h2
+          className="
+            m-0
+            text-[28px]
+            font-bold
+            leading-[1.2]
+            text-[var(--color-text)]
+            max-[600px]:text-[26px]
+          "
+        >
+          {item.title}
+        </h2>
+
+        <p
+          className="
+            mt-5
+            max-w-[420px]
+            text-[15px]
+            leading-[1.7]
+            text-[var(--color-text-muted)]
+          "
+        >
+          {item.description}
+        </p>
+      </div>
+    </div>
+  </article>
+))}
           </div>
         </Container>
       </section>
