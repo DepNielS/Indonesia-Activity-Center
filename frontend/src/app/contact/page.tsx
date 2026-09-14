@@ -3,94 +3,347 @@ import Container from "@/src/components/ui/Container";
 export default function ContactPage() {
   return (
     <main>
-      <section className="contact-page-section">
+      <section
+        className="
+          w-full
+          bg-[var(--color-surface)]
+          py-[140px]
+          max-[900px]:py-[100px]
+          max-[600px]:py-20
+        "
+      >
         <Container>
-          <div className="contact-page-header">
-            <span className="contact-page-label">
+          <div
+            className="
+              mb-20
+              max-w-[900px]
+              max-[900px]:mb-[60px]
+              max-[600px]:mb-[50px]
+            "
+          >
+            <span
+              className="
+                mb-5
+                inline-block
+                text-[13px]
+                font-bold
+                tracking-[1.5px]
+                text-[var(--color-text-muted)]
+              "
+            >
               CONTACT
             </span>
 
-            <h1 className="contact-page-title">
+            <h1
+              className="
+                m-0
+                max-w-[850px]
+                text-[clamp(48px,6vw,76px)]
+                font-bold
+                leading-none
+                tracking-[-3px]
+                text-[var(--color-text)]
+                max-[900px]:text-[clamp(44px,7vw,64px)]
+                max-[600px]:text-[42px]
+                max-[600px]:tracking-[-2px]
+              "
+            >
               Get in Touch
             </h1>
 
-            <p className="contact-page-description">
+            <p
+              className="
+                mt-[30px]
+                max-w-[650px]
+                text-[18px]
+                leading-[1.7]
+                text-[var(--color-text-muted)]
+                max-[600px]:text-base
+              "
+            >
               Have a question or want to learn more about
               Indonesia Activity Center? Get in touch with us.
             </p>
           </div>
 
-          <div className="contact-page-grid">
-            <article className="contact-page-card">
-              <span className="contact-page-card-label">
+          <div
+            className="
+              grid
+              grid-cols-2
+              border-l
+              border-t
+              border-[var(--color-border)]
+              max-[600px]:grid-cols-1
+            "
+          >
+            <article
+              className="
+                flex
+                min-h-[280px]
+                flex-col
+                justify-between
+                border-b
+                border-r
+                border-[var(--color-border)]
+                bg-[var(--color-surface)]
+                p-8
+                transition-[background,transform]
+                duration-250
+                hover:-translate-y-1
+                hover:bg-[var(--color-background)]
+                max-[600px]:min-h-[250px]
+                max-[600px]:p-6
+              "
+            >
+              <span
+                className="
+                  text-[13px]
+                  font-bold
+                  tracking-[1.5px]
+                  text-[var(--color-text-muted)]
+                "
+              >
                 LOCATION
               </span>
 
-              <h2 className="contact-page-card-title">
+              <h2
+                className="
+                  mt-[60px]
+                  text-[28px]
+                  font-bold
+                  leading-[1.2]
+                  text-[var(--color-text)]
+                  max-[600px]:mt-[50px]
+                  max-[600px]:text-[26px]
+                "
+              >
                 Visit Us
               </h2>
 
-              <p className="contact-page-card-description">
+              <p
+                className="
+                  mt-5
+                  max-w-[420px]
+                  text-base
+                  leading-[1.7]
+                  text-[var(--color-text-muted)]
+                "
+              >
                 Jl. I Ketut Natih, Purwakerthi,
                 Amed, Bali
               </p>
             </article>
 
-            <article className="contact-page-card">
-                <span className="contact-page-card-label">
-                    PHONE
-                </span>
+            <article
+              className="
+                flex
+                min-h-[280px]
+                flex-col
+                justify-between
+                border-b
+                border-r
+                border-[var(--color-border)]
+                bg-[var(--color-surface)]
+                p-8
+                transition-[background,transform]
+                duration-250
+                hover:-translate-y-1
+                hover:bg-[var(--color-background)]
+                max-[600px]:min-h-[250px]
+                max-[600px]:p-6
+              "
+            >
+              <span
+                className="
+                  text-[13px]
+                  font-bold
+                  tracking-[1.5px]
+                  text-[var(--color-text-muted)]
+                "
+              >
+                PHONE
+              </span>
 
-                <h2 className="contact-page-card-title">
-                    Call or WhatsApp
-                </h2>
+              <h2
+                className="
+                  mt-[60px]
+                  text-[28px]
+                  font-bold
+                  leading-[1.2]
+                  text-[var(--color-text)]
+                  max-[600px]:mt-[50px]
+                  max-[600px]:text-[26px]
+                "
+              >
+                Call or WhatsApp
+              </h2>
 
-                <div className="contact-page-card-actions">
-                    <a
-                    href="tel:+6282340941142"
-                    className="contact-page-link"
-                    >
-                    +62 823-4094-1142
-                    </a>
-
-                    <a
-                    href="https://wa.me/6282340941142"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="contact-page-link"
-                    >
-                    WhatsApp →
-                    </a>
-                </div>
-            </article>
-
-            <article className="contact-page-card">
-                <span className="contact-page-card-label">
-                    EMAIL
-                </span>
-
-                <h2 className="contact-page-card-title">
-                    Send Us an Email
-                </h2>
+              <div
+                className="
+                  mt-5
+                  flex
+                  flex-col
+                  items-start
+                  gap-[10px]
+                "
+              >
+                <a
+                  href="tel:+6282340941142"
+                  className="
+                    inline-block
+                    text-base
+                    font-semibold
+                    leading-[1.5]
+                    text-[var(--color-text)]
+                    no-underline
+                    transition-[color,transform]
+                    duration-250
+                    hover:translate-x-1
+                    hover:text-[var(--color-text-muted)]
+                  "
+                >
+                  +62 823-4094-1142
+                </a>
 
                 <a
-                    href="mailto:amed@indonesiaactivity.com"
-                    className="contact-page-link"
+                  href="https://wa.me/6282340941142"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
+                    inline-block
+                    text-base
+                    font-semibold
+                    leading-[1.5]
+                    text-[var(--color-text)]
+                    no-underline
+                    transition-[color,transform]
+                    duration-250
+                    hover:translate-x-1
+                    hover:text-[var(--color-text-muted)]
+                  "
                 >
-                    amed@indonesiaactivity.com →
+                  WhatsApp →
                 </a>
+              </div>
             </article>
 
-            <article className="contact-page-card">
-              <span className="contact-page-card-label">
+            <article
+              className="
+                flex
+                min-h-[280px]
+                flex-col
+                justify-between
+                border-b
+                border-r
+                border-[var(--color-border)]
+                bg-[var(--color-surface)]
+                p-8
+                transition-[background,transform]
+                duration-250
+                hover:-translate-y-1
+                hover:bg-[var(--color-background)]
+                max-[600px]:min-h-[250px]
+                max-[600px]:p-6
+              "
+            >
+              <span
+                className="
+                  text-[13px]
+                  font-bold
+                  tracking-[1.5px]
+                  text-[var(--color-text-muted)]
+                "
+              >
+                EMAIL
+              </span>
+
+              <h2
+                className="
+                  mt-[60px]
+                  text-[28px]
+                  font-bold
+                  leading-[1.2]
+                  text-[var(--color-text)]
+                  max-[600px]:mt-[50px]
+                  max-[600px]:text-[26px]
+                "
+              >
+                Send Us an Email
+              </h2>
+
+              <a
+                href="mailto:amed@indonesiaactivity.com"
+                className="
+                  mt-5
+                  inline-block
+                  text-base
+                  font-semibold
+                  leading-[1.5]
+                  text-[var(--color-text)]
+                  no-underline
+                  transition-[color,transform]
+                  duration-250
+                  hover:translate-x-1
+                  hover:text-[var(--color-text-muted)]
+                "
+              >
+                amed@indonesiaactivity.com →
+              </a>
+            </article>
+
+            <article
+              className="
+                flex
+                min-h-[280px]
+                flex-col
+                justify-between
+                border-b
+                border-r
+                border-[var(--color-border)]
+                bg-[var(--color-surface)]
+                p-8
+                transition-[background,transform]
+                duration-250
+                hover:-translate-y-1
+                hover:bg-[var(--color-background)]
+                max-[600px]:min-h-[250px]
+                max-[600px]:p-6
+              "
+            >
+              <span
+                className="
+                  text-[13px]
+                  font-bold
+                  tracking-[1.5px]
+                  text-[var(--color-text-muted)]
+                "
+              >
                 HOURS
               </span>
 
-              <h2 className="contact-page-card-title">
+              <h2
+                className="
+                  mt-[60px]
+                  text-[28px]
+                  font-bold
+                  leading-[1.2]
+                  text-[var(--color-text)]
+                  max-[600px]:mt-[50px]
+                  max-[600px]:text-[26px]
+                "
+              >
                 Opening Hours
               </h2>
 
-              <p className="contact-page-card-description">
+              <p
+                className="
+                  mt-5
+                  max-w-[420px]
+                  text-base
+                  leading-[1.7]
+                  text-[var(--color-text-muted)]
+                "
+              >
                 Daily · 8am–10pm
               </p>
             </article>
@@ -100,4 +353,3 @@ export default function ContactPage() {
     </main>
   );
 }
-

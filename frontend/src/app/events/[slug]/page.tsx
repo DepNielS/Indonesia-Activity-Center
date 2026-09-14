@@ -1,8 +1,6 @@
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
 
-import {notFound} from 'next/navigation';
-
-
+import { notFound } from 'next/navigation';
 
 import Container from '@/src/components/ui/Container';
 
@@ -16,6 +14,7 @@ interface EventDetailPageProps {
     slug: string;
   }>;
 }
+
 
 export async function generateMetadata({
   params,
@@ -39,6 +38,7 @@ export async function generateMetadata({
   }
 }
 
+
 export default async function EventDetailPage({
   params,
 }: EventDetailPageProps) {
@@ -46,110 +46,245 @@ export default async function EventDetailPage({
 
   let event;
 
-    try {
+  try {
     event =
-        await getPublishedEventBySlug(slug);
-    } catch {
+      await getPublishedEventBySlug(slug);
+  } catch {
     notFound();
-    }
+  }
+
 
   return (
-  <section
-    id="event-detail"
-    className="event-detail-section"
-  >
-    <Container>
+    <section
+      id="event-detail"
+      className="
+        w-full
+        py-[120px]
+        max-[768px]:py-20
+      "
+    >
+      <Container>
 
-      {/* EVENT IMAGE */}
+        {/* EVENT IMAGE */}
 
-      <div className="event-detail-image">
+        <div
+          className="
+            mb-16
+            w-full
+            overflow-hidden
+            max-[768px]:mb-10
+          "
+        >
+          {event.image ? (
+            <img
+              src={event.image}
+              alt={event.title}
+              className="
+                block
+                h-auto
+                w-full
+                object-cover
+              "
+            />
+          ) : (
+            <div
+              className="
+                flex
+                min-h-[480px]
+                items-center
+                justify-center
+                bg-[#f1f1f1]
+                text-[14px]
+                tracking-[0.12em]
+                max-[768px]:min-h-[280px]
+              "
+            >
+              EVENT
+            </div>
+          )}
+        </div>
 
-        {event.image ? (
-          <img
-            src={event.image}
-            alt={event.title}
-          />
-        ) : (
-          <div className="event-detail-image-placeholder">
+
+        {/* EVENT CONTENT */}
+
+        <div
+          className="
+            max-w-[900px]
+          "
+        >
+
+          <span
+            className="
+              inline-block
+              text-sm
+              font-semibold
+              uppercase
+              tracking-[0.12em]
+              text-[var(--color-secondary)]
+            "
+          >
             EVENT
-          </div>
-        )}
-
-      </div>
+          </span>
 
 
-      {/* EVENT CONTENT */}
-
-      <div className="event-detail-content">
-
-        <span className="section-label">
-          EVENT
-        </span>
-
-        <h1 className="event-detail-title">
-          {event.title}
-        </h1>
-
-        <p className="event-detail-description">
-          {event.description}
-        </p>
+          <h1
+            className="
+              mt-4
+              text-[clamp(42px,6vw,76px)]
+              font-medium
+              leading-[0.95]
+              text-[var(--color-text)]
+              max-[768px]:text-[clamp(38px,11vw,56px)]
+            "
+          >
+            {event.title}
+          </h1>
 
 
-        {/* EVENT META */}
-
-        <div className="event-detail-meta">
-
-          <div className="event-detail-meta-item">
-
-            <span className="event-detail-meta-label">
-              DATE
-            </span>
-
-            <p>
-              {formatEventDate(
-                event.startAt,
-                event.endAt,
-              )}
-            </p>
-
-          </div>
+          <p
+            className="
+              mt-8
+              max-w-[720px]
+              text-[18px]
+              leading-[1.7]
+              text-[var(--color-text)]
+              max-[768px]:text-base
+            "
+          >
+            {event.description}
+          </p>
 
 
-          <div className="event-detail-meta-item">
+          {/* EVENT META */}
 
-            <span className="event-detail-meta-label">
-              TIME
-            </span>
+          <div
+            className="
+              mt-14
+              grid
+              grid-cols-3
+              gap-8
+              border-t
+              border-[var(--color-border)]
+              pt-8
+              max-[768px]:mt-10
+              max-[768px]:grid-cols-1
+              max-[768px]:gap-6
+            "
+          >
 
-            <p>
-              {formatEventTime(
-                event.startAt,
-                event.endAt,
-              )}
-            </p>
+            {/* DATE */}
 
-          </div>
+            <div
+              className="
+                flex
+                flex-col
+                gap-[10px]
+              "
+            >
+              <span
+                className="
+                  text-[11px]
+                  uppercase
+                  tracking-[0.14em]
+                  text-[var(--color-text)]
+                  opacity-60
+                "
+              >
+                DATE
+              </span>
+
+              <p
+                className="
+                  m-0
+                  text-base
+                  leading-[1.5]
+                  text-[var(--color-text)]
+                "
+              >
+                {formatEventDate(
+                  event.startAt,
+                  event.endAt,
+                )}
+              </p>
+            </div>
 
 
-          <div className="event-detail-meta-item">
+            {/* TIME */}
 
-            <span className="event-detail-meta-label">
-              LOCATION
-            </span>
+            <div
+              className="
+                flex
+                flex-col
+                gap-[10px]
+              "
+            >
+              <span
+                className="
+                  text-[11px]
+                  uppercase
+                  tracking-[0.14em]
+                  text-[var(--color-text)]
+                  opacity-60
+                "
+              >
+                TIME
+              </span>
 
-            <p>
-              {event.location ??
-                'Location TBA'}
-            </p>
+              <p
+                className="
+                  m-0
+                  text-base
+                  leading-[1.5]
+                  text-[var(--color-text)]
+                "
+              >
+                {formatEventTime(
+                  event.startAt,
+                  event.endAt,
+                )}
+              </p>
+            </div>
+
+
+            {/* LOCATION */}
+
+            <div
+              className="
+                flex
+                flex-col
+                gap-[10px]
+              "
+            >
+              <span
+                className="
+                  text-[11px]
+                  uppercase
+                  tracking-[0.14em]
+                  text-[var(--color-text)]
+                  opacity-60
+                "
+              >
+                LOCATION
+              </span>
+
+              <p
+                className="
+                  m-0
+                  text-base
+                  leading-[1.5]
+                  text-[var(--color-text)]
+                "
+              >
+                {event.location ?? 'Location TBA'}
+              </p>
+            </div>
 
           </div>
 
         </div>
 
-      </div>
-
-    </Container>
-  </section>
+      </Container>
+    </section>
   );
 }
 
